@@ -10,7 +10,7 @@ The functionality requirements of this project involve:
 | 4 | Back end | Integrates software and sends communication if there is a significant threat that needs action. |
 | 5 | Threat Detection | Threat Detection Software to identify the severity of threat of a shipping operation. |
 
-The following technologies will be necessary to develop for the minimum viable product (MPV):
+The following technologies will be necessary to develop for the minimum viable product (MVP):
 
 | Enabled Feature | Development Tasks |
 | :---- | :---- |

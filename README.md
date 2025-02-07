@@ -21,9 +21,11 @@ cd Satellite-Detection
 
 ## Features
 
-- Real-time vide processing
+- Real-time Image processing
 - AI-based component identification.
 - Lightweight deployments for edge hardware.
+- Fishing Ship detection
+- Send alerts when ship should be investigated
 
 
 ## Deliverables
@@ -34,3 +36,4 @@ cd Satellite-Detection
 ## Contacts
 
 - Jarron Conover: 801-649-7377 jarron.conover@gmail.com 
+- Thomas Le Sueur: a02406824@usu.edu
