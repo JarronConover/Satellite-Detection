@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='utf-8'?>
+<annotation>
+	<annotator>zhang zhengning</annotator>
+	<source>
+		<database></database>
+		<dataset_source>Airbus ship</dataset_source>
+	</source>
+	<port_id></port_id>
+	<Img_Resolution></Img_Resolution>
+	<folder>images</folder>
+	<filename>0aa565354.bmp</filename>
+	<size>
+        <width>443</width>
+        <height>573</height>
+        <depth>3</depth>
+	</size>
+	<object>
+		<name>Cargo</name>
+		<level_0>1</level_0>
+		<level_1>3</level_1>
+		<level_2>15</level_2>
+		<level_3>40</level_3>
+		<iscrowd>0</iscrowd>
+		<truncted>0</truncted>
+		<is_closed>0</is_closed>
+		<Ship_size>middle</Ship_size>
+		<Ship_location>sea</Ship_location>
+		<Ship_env>
+			<Ship_env_is_normal>1</Ship_env_is_normal>
+			<Ship_env_is_fog>0</Ship_env_is_fog>
+			<Ship_env_is_glint>0</Ship_env_is_glint>
+			<Ship_env_is_dark>0</Ship_env_is_dark>
+		</Ship_env>
+		<Ship_area>1672.0</Ship_area>
+		<difficult>0</difficult>
+        <rotated_box>
+            <cx>360</cx>
+            <cy>378</cy>
+            <width>88</width>
+            <height>19</height>
+            <rot>0.569419</rot>
+        </rotated_box>
+        <polygon>
+            <x1>328</x1>
+            <y1>409</y1>
+            <x2>401</x2>
+            <y2>362</y2>
+            <x3>392</x3>
+            <y3>347</y3>
+            <x4>319</x4>
+            <y4>394</y4>
+        </polygon>
+        <bndbox>
+            <xmin>319</xmin>
+            <ymin>347</ymin>
+            <xmax>401</xmax>
+            <ymax>409</ymax>
+        </bndbox>
+	</object>
+</annotation>

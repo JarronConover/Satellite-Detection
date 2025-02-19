@@ -1,0 +1,9 @@
+train: /home/jadogg22/ai/satTrainingv2/data/ShipRSImageNet_V1/YOLO_Format/images/train
+val: /home/jadogg22/ai/satTrainingv2/data/ShipRSImageNet_V1/YOLO_Format/images/val
+nc: 4  # Adjust this according to your class count
+names:
+  0: other_ship
+  1: warship
+  2: merchant
+  3: unknown
+
