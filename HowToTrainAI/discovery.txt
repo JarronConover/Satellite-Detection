@@ -1,0 +1,51 @@
+Classification Summary:
+Container Ship (Levels: 1, 3, 13, 38) → 304 occurrences
+Other Destroyer (Levels: 1, 2, 6, 9) → 217 occurrences
+Commander (Levels: 1, 2, 10, 28) → 120 occurrences
+Nimitz (Levels: 1, 2, 4, 6) → 103 occurrences
+Other Ship (Levels: 1, 1, 1, 1) → 1347 occurrences
+Dock (Levels: 2, 4, 25, 50) → 898 occurrences
+Osumi LL (Levels: 1, 2, 9, 24) → 34 occurrences
+AOE (Levels: 1, 2, 11, 33) → 48 occurrences
+Atago DD (Levels: 1, 2, 6, 10) → 208 occurrences
+LSD 41 LL (Levels: 1, 2, 9, 26) → 116 occurrences
+LHA LL (Levels: 1, 2, 9, 27) → 157 occurrences
+Other Auxiliary Ship (Levels: 1, 2, 11, 29) → 78 occurrences
+Perry FF (Levels: 1, 2, 7, 16) → 500 occurrences
+Enterprise (Levels: 1, 2, 4, 5) → 87 occurrences
+Submarine (Levels: 1, 2, 3, 3) → 837 occurrences
+Other Merchant (Levels: 1, 3, 12, 37) → 200 occurrences
+Tugboat (Levels: 1, 3, 17, 42) → 243 occurrences
+Cargo (Levels: 1, 3, 15, 40) → 826 occurrences
+Yacht (Levels: 1, 3, 19, 44) → 641 occurrences
+Ticonderoga (Levels: 1, 2, 5, 8) → 335 occurrences
+RoRo (Levels: 1, 3, 14, 39) → 127 occurrences
+Sanantonio AS (Levels: 1, 2, 11, 35) → 61 occurrences
+Oil Tanker (Levels: 1, 3, 22, 47) → 161 occurrences
+Other Warship (Levels: 1, 2, 2, 2) → 1171 occurrences
+Patrol (Levels: 1, 2, 8, 17) → 139 occurrences
+Other Frigate (Levels: 1, 2, 7, 15) → 168 occurrences
+Test Ship (Levels: 1, 2, 11, 31) → 50 occurrences
+Other Landing (Levels: 1, 2, 9, 18) → 87 occurrences
+Masyuu AS (Levels: 1, 2, 11, 34) → 36 occurrences
+Arleigh Burke DD (Levels: 1, 2, 6, 11) → 526 occurrences
+Hovercraft (Levels: 1, 3, 23, 48) → 260 occurrences
+Midway (Levels: 1, 2, 4, 7) → 18 occurrences
+Barge (Levels: 1, 3, 16, 41) → 183 occurrences
+Ferry (Levels: 1, 3, 18, 43) → 244 occurrences
+Fishing Vessel (Levels: 1, 3, 21, 46) → 417 occurrences
+YuDao LL (Levels: 1, 2, 9, 21) → 45 occurrences
+Other Aircraft Carrier (Levels: 1, 2, 4, 4) → 34 occurrences
+Motorboat (Levels: 1, 3, 24, 49) → 1588 occurrences
+Hyuga DD (Levels: 1, 2, 6, 13) → 86 occurrences
+Asagiri DD (Levels: 1, 2, 6, 14) → 62 occurrences
+Austin LL (Levels: 1, 2, 9, 23) → 103 occurrences
+Training Ship (Levels: 1, 2, 11, 32) → 42 occurrences
+Hatsuyuki DD (Levels: 1, 2, 6, 12) → 110 occurrences
+Sailboat (Levels: 1, 3, 20, 45) → 666 occurrences
+YuDeng LL (Levels: 1, 2, 9, 20) → 64 occurrences
+YuZhao LL (Levels: 1, 2, 9, 22) → 37 occurrences
+YuTing LL (Levels: 1, 2, 9, 19) → 80 occurrences
+EPF (Levels: 1, 2, 11, 36) → 52 occurrences
+Medical Ship (Levels: 1, 2, 11, 30) → 27 occurrences
+Wasp LL (Levels: 1, 2, 9, 25) → 20 occurrences
