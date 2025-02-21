@@ -38,3 +38,4 @@ cd Satellite-Detection
 - Jarron Conover: 801-649-7377 jarron.conover@gmail.com 
 - Thomas Le Sueur: a02406824@usu.edu
 - Jaden Anderson: 435-770-6846 Jadenanderson22@gmail.com
+- Braden Cannon: 260-338-4407 bradenxcannon@gmail.com
