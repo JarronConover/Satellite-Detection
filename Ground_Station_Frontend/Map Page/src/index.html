@@ -27,7 +27,7 @@ limitations under the License.
 
 <header>
   <div class="banner">
-    <div class="left_text"><i class="material-icons">menu</i></div>
+    <div class="left_text" id="menu"><i class="material-icons">menu</i></div>
     <div class="center">Map</div>
     <div class="right_text" id="filters">Filters</div>
   </div>
@@ -36,6 +36,15 @@ limitations under the License.
 <body>
 </div>
   <div id="map"></div>
+
+  <div id="menuModal" class="menu modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Menu</h3>
+      <a href="/">Map</a><br>
+      <a href="/ships/">Ship List</a><br>
+    </div>
+  </div>
 
   <div id="filterModal" class="modal">
     <div class="modal-content">

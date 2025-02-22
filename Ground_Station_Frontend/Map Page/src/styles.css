@@ -63,10 +63,10 @@ body {
   margin-right: 10px;
 }
 
-a {
+/* a {
   color: inherit;
   text-decoration: none;
-}
+} */
 
 /* Modal Styles */
 .modal {
@@ -79,6 +79,12 @@ a {
   height: auto;
   overflow: auto; /* Enable scroll if needed */
   border-radius: 8px;
+}
+
+.menu {
+  width: 150px;
+  right: auto;
+  left: 10px;
 }
 
 .modal-content {
