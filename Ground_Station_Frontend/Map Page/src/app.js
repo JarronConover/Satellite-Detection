@@ -151,6 +151,12 @@ function addMarkers(map) {
     menuModal.style.display = "none";
   }
 
+  window.onclick = function(event) {
+    if (event.target == menuModal) {
+      menuModal.style.display = "none";
+    }
+  }
+
   // Get the modal
   const filterModal = document.getElementById("filterModal");
   
