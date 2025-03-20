@@ -5,17 +5,18 @@ The functionality requirements of this project involve:
 | Priority | Feature | Description |
 | :---: | :---- | :---- |
 | 1 | Image Detection Software | Edge Detection Software from satellite images. |
-| 2 | Radar Detection Software | Edge Detection Software from satellite radar. |
-| 3 | Ship Categorization | Ship Detection Software to identify type of ship. |
-| 4 | Back end | Integrates software and sends communication if there is a significant threat that needs action. |
-| 5 | Threat Detection | Threat Detection Software to identify the severity of threat of a shipping operation. |
+| 2 | Ship Categorization | Ship Detection Software to identify type of ship. |
+| 3 | Back end | Integrates software and sends communication if there is a significant threat that needs action. |
+| 4 | Ground Station Front End | A Visual view of the in space satellite on a map, as well as utilization of the Ground Station Decision Making Agent |
+| 5 | Ground Station Decision Making Agent | Threat Detection Software to identify the severity of threat of a shipping operation. |
+| 6 | Radar Detection Software | Edge Detection Software from satellite radar. |
 
 The following technologies will be necessary to develop for the minimum viable product (MVP):
 
 | Enabled Feature | Development Tasks |
 | :---- | :---- |
 | Image Edge Detection | Database management, Edge detection software from images. |
-| Radar Edge Detection | Database management, Edge detection software from radar. |
 | Ship Detection | Train a machine learning model to detect type of ship from edge detection, Implement machine learning model. |
+| Ground Station | A Basic ground stationg frontend as described above. |
 | Waterfall cascading logic | Limit computation to areas that are of interest and report ships that are of high priority. |
 

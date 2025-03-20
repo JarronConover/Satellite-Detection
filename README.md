@@ -25,8 +25,8 @@ cd Satellite-Detection
 - AI-based component identification.
 - Lightweight deployments for edge hardware.
 - Fishing Ship detection
-- Send alerts when ship should be investigated
-
+- Send alerts when ship should be investigated from Ground Station
+- Ground Station with visual display of boats
 
 ## Deliverables
 
