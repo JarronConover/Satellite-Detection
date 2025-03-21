@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Map</title>
+  <meta name="viewport" content="initial-scale=1.0">
+  <meta charset="utf-8">
+  <link href="styles.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script src="api.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+
+<header>
+  <div class="banner">
+    <div class="left_text point" id="menu"><i class="material-icons">menu</i></div>
+    <div class="center">Map</div>
+    <div class="right_text point" id="filters">Filters</div>
+  </div>
+</header>
+
+<body>
+</div>
+  <div id="map"></div>
+
+  <div id="menuModal" class="menu modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Menu</h3>
+      <a href="/">Map</a><br>
+      <a href="/ships/">Ship List</a><br>
+    </div>
+  </div>
+
+  <div id="filterModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h3>Filter by Boat Classification</h3>
+      <label><input type="checkbox" class="classification-filter" value="Cargo" checked> Cargo</label><br>
+      <label><input type="checkbox" class="classification-filter" value="Fishing" checked> Fishing</label><br>
+      <label><input type="checkbox" class="classification-filter" value="Warship" checked> Warship</label><br>
+      <label><input type="checkbox" class="classification-filter" value="Unauthorized" checked> Unauthorized</label><br>
+    </div>
+  
+
+</body>
+
+</html>
