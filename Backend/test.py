@@ -1,8 +1,8 @@
-from flask import Flask
+from flask import Flask, request, Response
 
 app = Flask(__name__)
 
-TEST = false
+TEST = False
 
 @app.route("/")
 def hello_world():
@@ -14,4 +14,11 @@ def hello_world():
 
 @app.post('/json')
 def json():
-    
+    try:
+        Test = request.get_json()
+        print(Test)
+        return
+    except:
+        pass
+
+
