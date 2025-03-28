@@ -1,8 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
-TEST = false
+TEST = False
 
 @app.route("/")
 def hello_world():
@@ -14,4 +16,4 @@ def hello_world():
 
 @app.post('/json')
 def json():
-    
+    pass
