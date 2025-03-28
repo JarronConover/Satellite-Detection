@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request, Response
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -16,4 +16,11 @@ def hello_world():
 
 @app.post('/json')
 def json():
-    pass
+    try:
+        Test = request.get_json()
+        print(Test)
+        return
+    except:
+        pass
+
+
