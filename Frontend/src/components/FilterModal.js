@@ -20,11 +20,6 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
     if (triggerRef.current) {
       const rect = triggerRef.current.getBoundingClientRect();
       let top = rect.bottom + window.scrollY; // Position below the trigger element
-
-      // Ensure the modal stays within the viewport horizontally
-      const modalWidth = 300; // Approximate width of the modal in pixels
-      const viewportWidth = window.innerWidth;
-
       return { top };
     }
     return { top: "50%" }; // Default fallback
@@ -51,7 +46,19 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
       overlayClassName="modal-overlay"
     >
       <div>
-        <button onClick={onClose} className="close-button">
+        <button
+          onClick={onClose}
+          className="close-button"
+          style={{
+            position: "absolute",
+            top: "10px", // Adjust top positioning
+            right: "10px", // Adjust right positioning
+            fontSize: "18px",
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+          }}
+        >
           &times;
         </button>
         <h3>Filter by Boat Classification</h3>

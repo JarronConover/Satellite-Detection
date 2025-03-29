@@ -88,3 +88,13 @@ html, body, #map, #root {
   text-decoration: none;
   cursor: pointer;
 }
+
+.modal-overlay {
+  position: fixed; /* Makes the overlay cover the entire viewport */
+  top: 0;
+  left: 0;
+  width: 100vw; /* Full screen width */
+  height: 100vh; /* Full screen height */
+  background-color: rgba(0, 0, 0, 0.25); /* Semi-transparent background */
+  z-index: 1000; /* Ensure it appears on top of other elements */
+}

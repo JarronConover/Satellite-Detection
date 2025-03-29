@@ -2,12 +2,12 @@ import React, { useState, useRef } from "react";
 import Map from "./components/Map";
 import Markers from "./components/Markers";
 import FilterModal from "./components/FilterModal";
+import MenuModal from "./components/MenuModal";
 import Modal from "react-modal";
 
 Modal.setAppElement("#root");
 
 const locations = {
-
   operaHouse: { lat: -33.8567844, lng: 151.213108, classification: "Cargo", id: 0 },
   tarongaZoo: { lat: -33.8472767, lng: 151.2188164, classification: "Cargo", id: 1 },
   manlyBeach: { lat: -33.8209738, lng: 151.2563253, classification: "Cargo", id: 2 },
@@ -51,8 +51,10 @@ const locations = {
 function App() {
   const [map, setMap] = useState(null); // Map instance
   const [filters, setFilters] = useState(["Cargo", "Fishing", "Warship", "Unauthorized"]); // Filters state
-  const [isModalOpen, setIsModalOpen] = useState(false); // Modal open state
-  const filtersRef = useRef(null); // Reference to the "Filters" element
+  const [isFilterModalOpen, setIsFilterModalOpen] = useState(false); // Filter modal open state
+  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false); // Menu modal open state
+  const filtersRef = useRef(null); // Reference to the "Filters" button
+  const menuRef = useRef(null); // Reference to the "Menu" button
 
   return (
     <div className="app-container" style={{ height: "100%" }}>
@@ -61,7 +63,8 @@ function App() {
           <div
             className="left_text point"
             id="menu"
-            onClick={() => console.log("Menu clicked")}
+            ref={menuRef} // Attach reference to the "Menu" button
+            onClick={() => setIsMenuModalOpen(true)} // Open menu modal
           >
             Menu
           </div>
@@ -69,8 +72,8 @@ function App() {
           <div
             className="right_text point"
             id="filters"
-            ref={filtersRef}
-            onClick={() => setIsModalOpen(true)} // Open modal when filters are clicked
+            ref={filtersRef} // Attach reference to the "Filters" button
+            onClick={() => setIsFilterModalOpen(true)} // Open filter modal
           >
             Filters
           </div>
@@ -80,11 +83,16 @@ function App() {
       <Map onMapLoad={setMap} />
       <Markers map={map} locations={locations} filters={filters} />
       <FilterModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)} // Close modal
+        isOpen={isFilterModalOpen}
+        onClose={() => setIsFilterModalOpen(false)} // Close filter modal
         filters={filters}
         setFilters={setFilters} // Pass filters state
         triggerRef={filtersRef} // Pass the reference for positioning the modal
+      />
+      <MenuModal
+        isOpen={isMenuModalOpen}
+        onClose={() => setIsMenuModalOpen(false)} // Close menu modal when clicking outside
+        triggerRef={menuRef} // Pass the reference for positioning the menu modal
       />
     </div>
   );
