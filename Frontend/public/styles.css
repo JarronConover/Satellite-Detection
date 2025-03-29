@@ -6,13 +6,8 @@
   --jet: #484349;
 }
 
- #map {
-  height: 100%;
-}
-
 /* Optional: Makes the sample page fill the window. */
-html,
-body {
+html, body, #map, #root {
   height: 100%;
   margin: 0;
   padding: 0;
