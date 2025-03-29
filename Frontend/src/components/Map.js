@@ -17,6 +17,27 @@ function Map({ onMapLoad }) {
           mapTypeControlOptions: { position: google.maps.ControlPosition.LEFT_BOTTOM },
           fullscreenControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM },
           streetViewControl: false,
+          styles: [
+            {
+              featureType: "poi", // Points of Interest
+              elementType: "labels", // Labels for POIs
+              stylers: [{ visibility: "off" }],
+            },
+            {
+              featureType: "poi.business", // Businesses
+              stylers: [{ visibility: "off" }],
+            },
+            {
+              featureType: "transit", // Transit stations
+              stylers: [{ visibility: "off" }],
+            },
+            {
+              featureType: "road", // Roads
+              elementType: "labels", // Labels for roads
+              stylers: [{ visibility: "off" }],
+            },
+          ],
+        
         });
   
         onMapLoad(map); // Pass the map instance to the parent
