@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import MarkerClusterer from "@google/markerclustererplus";
 
 const Markers = ({ map, ships, filters }) => {
-  console.log(ships)
   useEffect(() => {
     if (!map) return;
 

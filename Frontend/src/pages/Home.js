@@ -6,6 +6,7 @@ import FilterModal from "../components/FilterModal";
 import MenuModal from "../components/MenuModal";
 
 const Home = () => {
+  const title = "Map";
   const [map, setMap] = useState(null); // Map instance
   const [ships, setShips] = useState({}); // Ships data state
   const [filters, setFilters] = useState(["Cargo", "Fishing", "Warship", "Unauthorized"]); // Filters state
@@ -30,6 +31,12 @@ const Home = () => {
     fetchShips();
   }, []);
 
+  useEffect(() => {
+    if (map) {
+        document.title = title;
+    }
+  }, [map]);
+
   return (
     <div className="app-container" style={{ height: "100%" }}>
       <Header
@@ -37,9 +44,9 @@ const Home = () => {
         filtersRef={filtersRef}
         onMenuClick={() => setIsMenuModalOpen(true)}
         onFiltersClick={() => setIsFilterModalOpen(true)}
+        title={title}
+        isFilters={true}
       />
-      <Map onMapLoad={setMap} />
-      <Markers map={map} ships={ships} filters={filters} /> {/* Pass ships data */}
       <FilterModal
         isOpen={isFilterModalOpen}
         onClose={() => setIsFilterModalOpen(false)} // Close filter modal
@@ -52,6 +59,8 @@ const Home = () => {
         onClose={() => setIsMenuModalOpen(false)} // Close menu modal when clicking outside
         triggerRef={menuRef} // Pass the reference for positioning the menu modal
       />
+      <Map onMapLoad={setMap} />
+      <Markers map={map} ships={ships} filters={filters} /> {/* Pass ships data */}
     </div>
   );
 };

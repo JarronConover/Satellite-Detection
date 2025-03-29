@@ -1,6 +1,6 @@
 import React from "react";
 
-const Header = ({ menuRef, filtersRef, onMenuClick, onFiltersClick }) => {
+const Header = ({ menuRef, filtersRef, onMenuClick, onFiltersClick, title, isFilters }) => {
   return (
     <header>
       <div className="banner">
@@ -12,15 +12,17 @@ const Header = ({ menuRef, filtersRef, onMenuClick, onFiltersClick }) => {
         >
           Menu
         </div>
-        <div className="center">Map</div>
-        <div
-          className="right_text point"
-          id="filters"
-          ref={filtersRef} // Attach reference to the "Filters" button
-          onClick={onFiltersClick} // Open filter modal
-        >
-          Filters
-        </div>
+        <div className="center">{title}</div>
+        {isFilters && ( // Render "Filters" conditionally
+          <div
+            className="right_text point"
+            id="filters"
+            ref={filtersRef} // Attach reference to the "Filters" button
+            onClick={onFiltersClick} // Open filter modal
+          >
+            Filters
+          </div>
+        )}
       </div>
     </header>
   );

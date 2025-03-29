@@ -28,17 +28,23 @@ html, body, #map, #root {
 .left_text {
   margin-left: 10px;
   text-align: left;
+  margin-right: auto;
 }
 
 .center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.center_text {
   text-align: center;
-  margin-left: auto;
-  margin-right: auto;
 }
 
 .right_text {
   text-align: right;
   margin-right: 10px;
+  margin-left: auto;
 }
 
 .modal {
@@ -97,4 +103,23 @@ html, body, #map, #root {
   height: 100vh; /* Full screen height */
   background-color: rgba(0, 0, 0, 0.25); /* Semi-transparent background */
   z-index: 1000; /* Ensure it appears on top of other elements */
+}
+
+.gap {
+  margin-top: 50px;
+}
+
+.ship_bar {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  padding: 20px;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+
+.left {
+  margin-left: 10px;
 }
