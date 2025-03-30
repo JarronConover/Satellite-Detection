@@ -88,7 +88,7 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
               checked={isLocked}
               onChange={() => setIsLocked((prev) => !prev)} // Toggle lock state
             />
-            Lock Modal Open
+            Lock Filters Open
           </label>
         </div>
       </div>
