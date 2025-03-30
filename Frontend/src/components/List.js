@@ -12,14 +12,23 @@ const List = ({ ships, filters }) => {
     return (
         <div>
             <div className="gap"></div>
+            {filteredShips.length > 0 && (
+                <h3 className="center_text">
+                    Found {filteredShips.length} ship{filteredShips.length > 1 ? "s" : ""} in the list
+                </h3>
+            )}
             {filteredShips.length === 0 ? (
-                <p className="center">No ships match the selected filters.</p> // Message when no ships match
+                <p className="center_text">No ships match the selected filters.</p> // Message when no ships match
             ) : (
                 filteredShips.map((shipKey) => {
                     const ship = ships[shipKey];
                     // Render each ship as a list item
                     return (
-                        <div className="ship_bar" key={ship.id} onClick={() => navigate(`/ships/${ship.id}`)}>
+                        <div
+                            className="ship_bar"
+                            key={ship.id}
+                            onClick={() => navigate(`/ships/${ship.id}`)}
+                        >
                             <strong>ID:</strong> {ship.id} | 
                             <strong> Classification:</strong> {ship.classification} | 
                             <strong> Lat:</strong> {ship.lat} | 
