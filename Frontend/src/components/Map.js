@@ -9,14 +9,19 @@ const apiOptions = {
   libraries: ["drawing"], // Include the Drawing library
 };
 
-function Map({ onMapLoad }) {
+function Map({ onMapLoad, center }) {
+  let zoom = 16;
+  if (!center) {
+    center = [37.7166, -122.2830];
+    zoom = 9;
+  }
   const navigate = useNavigate();
   useEffect(() => {
     const loader = new Loader(apiOptions);
     loader.load().then(() => {
       const map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: -33.860664, lng: 151.208138 },
-        zoom: 14,
+        center: { lat: center[0], lng: center[1] },
+        zoom: zoom,
         mapTypeControlOptions: { position: google.maps.ControlPosition.LEFT_BOTTOM },
         fullscreenControlOptions: { position: google.maps.ControlPosition.RIGHT_BOTTOM },
         streetViewControl: false,

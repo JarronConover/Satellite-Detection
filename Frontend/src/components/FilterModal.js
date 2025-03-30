@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 
 // Make sure to bind the modal's root element to your app
 Modal.setAppElement("#root");
 
 function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
+  const [isLocked, setIsLocked] = useState(false); // State for the "Lock Modal Open" checkbox
   const classifications = ["Cargo", "Fishing", "Warship", "Unauthorized"];
 
   const handleCheckboxChange = (classification) => {
@@ -30,7 +31,7 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
   return (
     <Modal
       isOpen={isOpen}
-      onRequestClose={onClose}
+      onRequestClose={isLocked ? null : onClose} // Prevent closing when locked
       contentLabel="Filter Modal"
       style={{
         content: {
@@ -39,8 +40,13 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
           right: `10px`,
           transform: "none", // Avoid default centering
           width: "300px", // Set a fixed width for consistency
+          zIndex: 10, // Ensure modal stays above the map
+          pointerEvents: "auto", // Ensure modal is interactive
         },
-        overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+        overlay: {
+          backgroundColor: isLocked ? "transparent" : "rgba(0, 0, 0, 0.5)", // Remove overlay when locked
+          pointerEvents: isLocked ? "none" : "auto", // Allow clicks through the overlay when locked
+        },
       }}
       className="modal-content"
       overlayClassName="modal-overlay"
@@ -74,6 +80,17 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
             </label>
           </div>
         ))}
+
+        <div style={{ marginTop: "20px" }}>
+          <label>
+            <input
+              type="checkbox"
+              checked={isLocked}
+              onChange={() => setIsLocked((prev) => !prev)} // Toggle lock state
+            />
+            Lock Modal Open
+          </label>
+        </div>
       </div>
     </Modal>
   );

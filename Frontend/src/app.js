@@ -10,6 +10,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} /> {/* Home Page */}
+        <Route path="/:center" element={<Home />} /> {/* Centered Map */}
         <Route path="/ships" element={<Ships />} /> {/* Ships Page */}
         <Route path="/ships/filter/:bounds" element={<Ships />} /> {/* Ship in Bounds Page */}
         <Route path="/ships/:id" element={<Ship />} /> {/* Individual Ship Page */}

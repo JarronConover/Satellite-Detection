@@ -4,8 +4,11 @@ import Map from "../components/Map";
 import Markers from "../components/Markers";
 import FilterModal from "../components/FilterModal";
 import MenuModal from "../components/MenuModal";
+import { useParams } from "react-router-dom";
 
 const Home = () => {
+  let { center } = useParams();
+  center = center ? center.split("_").map(Number) : null; // Convert center string to array of numbers
   const title = "Map";
   const [map, setMap] = useState(null); // Map instance
   const [ships, setShips] = useState({}); // Ships data state
@@ -59,7 +62,7 @@ const Home = () => {
         onClose={() => setIsMenuModalOpen(false)} // Close menu modal when clicking outside
         triggerRef={menuRef} // Pass the reference for positioning the menu modal
       />
-      <Map onMapLoad={setMap} />
+      <Map onMapLoad={setMap} center={center} />
       <Markers map={map} ships={ships} filters={filters} /> {/* Pass ships data */}
     </div>
   );

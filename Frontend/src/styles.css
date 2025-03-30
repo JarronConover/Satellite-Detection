@@ -1,5 +1,6 @@
 
  :root {
+  --blue: #90daee;
   --snow: #F7F0F0;
   --jet: #484349;
 }
@@ -17,7 +18,7 @@ html, body, #map, #root {
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: #90daee;
+  background-color: var(--blue);
   color: var(--jet);
   text-align: center;
   padding: 10px 0;
@@ -118,8 +119,43 @@ html, body, #map, #root {
   border-radius: 5px;
   background-color: #f9f9f9;
   cursor: pointer;
+  margin: 10px;
 }
 
 .left {
   margin-left: 10px;
+}
+
+.unauthorized {
+  background-color: #ffa0a0;
+}
+
+.fishing {
+  background-color: var(--blue);
+}
+
+.cargo {
+  background-color: #b6ffb6;
+}
+
+.warship {
+  background-color: #BD8BC0;
+}
+
+.bottom-right {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
+button {
+  padding: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  background-color: var(--blue);
+  color: var(--jet);
+  border-color: var(--jet);
+  border-width: 1px;
+  cursor: pointer;
 }

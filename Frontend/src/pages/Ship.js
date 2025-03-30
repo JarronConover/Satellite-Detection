@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import Header from "../components/Header";
 import MenuModal from "../components/MenuModal";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 const Ship = () => {
     const { id } = useParams(); // Get the ship ID from the URL
@@ -56,12 +56,17 @@ const Ship = () => {
             <div className="gap"></div>
             <div className="ship-details">
                 {ship ? (
+                    <div>
                     <div className="left">
                         <h2 className="center_text">Ship Details</h2>
                         <p><strong>ID:</strong> {ship.id}</p>
                         <p><strong>Classification:</strong> {ship.classification}</p>
                         <p><strong>Latitude:</strong> {ship.lat}</p>
                         <p><strong>Longitude:</strong> {ship.lng}</p>
+                    </div>
+                    <Link to={`/${ship.lat}_${ship.lng}`}>
+                    <button className="bottom-right">Show on Map</button>
+                    </Link>
                     </div>
                 ) : (
                     <p>Ship not found.</p> // Fallback if the ship doesn't exist
