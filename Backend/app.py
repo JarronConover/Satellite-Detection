@@ -51,5 +51,8 @@ ships_data = {
 def get_ships():
     return jsonify(ships_data)
 
+@app.route('/satdump', methods=['post'])
+def sat_dump():
+
 if __name__ == "__main__":
     app.run(debug=True)
