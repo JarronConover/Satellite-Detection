@@ -25,8 +25,8 @@ cd Satellite-Detection
 - AI-based component identification.
 - Lightweight deployments for edge hardware.
 - Fishing Ship detection
-- Send alerts when ship should be investigated
-
+- Send alerts when ship should be investigated from Ground Station
+- Ground Station with visual display of boats
 
 ## Deliverables
 
@@ -38,3 +38,4 @@ cd Satellite-Detection
 - Jarron Conover: 801-649-7377 jarron.conover@gmail.com 
 - Thomas Le Sueur: a02406824@usu.edu
 - Jaden Anderson: 435-770-6846 Jadenanderson22@gmail.com
+- Braden Cannon: 260-338-4407 bradenxcannon@gmail.com
