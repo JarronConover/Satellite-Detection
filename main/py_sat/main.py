@@ -7,6 +7,7 @@ from io import BytesIO
 import os
 import numpy as np
 import torch
+import time
 
 model = YOLO("best.pt")
 
@@ -76,6 +77,7 @@ def get_bounding_boxes(image_path, device):
 
                     bounding_boxes.append({
                         "Classification": label,
+                        "timestamp": time.time(),  # Current timestamp
                         "latitude": 37.7749,  # Placeholder, need actual calculation
                         "longitude": -122.4194,  # Placeholder, need actual calculation
                         "width": width,
@@ -97,9 +99,9 @@ def sendData(data):
     return response.json()
 
 if __name__ == '__main__':
-    print('Running detection...')
     image_path = "sfbay_1.png"  # Replace with your image
     device = get_best_device()  # Get the best device for inference
+    print(f"Running Detection Using device: {device}")
     objects = get_bounding_boxes(image_path, device=device)  # Run detection
 
     # Send each detected ship's data to the backend
