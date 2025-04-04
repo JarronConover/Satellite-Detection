@@ -47,8 +47,15 @@ def get_bounding_boxes(image_path, device):
 
         # maybe we can check if the device is available and set it to cuda or mps
         # Check if the device is available
-       
-        results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='mps', show=True)
+
+        if device == 'cuda':
+            results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='cuda', show=False)
+        elif device == 'mps':
+            results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='mps', show=True)
+        else:
+            # Fallback to CPU
+            results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='cpu', show=False)
+
 
         for result in results:  # Iterate over results (list of `Result` objects)
             if result.boxes is not None:  # Ensure boxes exist
@@ -91,13 +98,10 @@ def sendData(data):
 
 if __name__ == '__main__':
     print('Running detection...')
-
     image_path = "sfbay_1.png"  # Replace with your image
     device = get_best_device()  # Get the best device for inference
     objects = get_bounding_boxes(image_path, device=device)  # Run detection
-    print("Detected objects:", objects)
 
     # Send each detected ship's data to the backend
     for obj in objects:
         response = sendData(obj)
-        print("Response:", response)
