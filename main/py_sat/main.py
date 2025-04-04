@@ -1,51 +1,71 @@
-import ultralitics as ul
-import requests 
+from ultralytics import YOLO  # Ensure proper import
+import requests
 import base64
+import cv2
+from PIL import Image
+from io import BytesIO
 
-model = ul.Model('best.onnx')
-model.load()
 
-#TODO
-    # get lat and long of sf bay image 
-    # trig for image lat and long
-    # get width and height of ship from pixels
-    # get individual ship images
+model = YOLO("best.pt")
 
-#send a post request to our backend server with the data we want to show
+def get_bounding_boxes(image_path):
+    """Run prediction and extract bounding boxes"""
+    img = cv2.imread(image_path)
+    results = model.predict(img)  # Run inference
+    
+    bounding_boxes = []
+    for result in results:
+        if result.boxes is not None:
+            for box in result.boxes:
+                x_min, y_min, x_max, y_max = map(int, box.xyxy[0])  # Extract coordinates
+                confidence = float(box.conf[0])  # Confidence score
+                label = model.names[int(box.cls[0])]  # Class label
+            
+                width = x_max - x_min
+                height = y_max - y_min
+
+                # Crop the ship image
+                cropped_img = img[y_min:y_max, x_min:x_max]
+
+                # Convert cropped image to Base64
+                _, buffer = cv2.imencode('.png', cropped_img)
+                base64_image = base64.b64encode(buffer).decode("utf-8")
+
+                image_data = base64.b64decode(base64_image)
+                image = Image.open(BytesIO(image_data))
+                image.save("test_output.png")  # Writes the decoded image to file
+
+                bounding_boxes.append({
+                    "Classification": label,
+                    "latitude": 37.7749,  # Placeholder, need actual calculation
+                    "longitude": -122.4194,  # Placeholder, need actual calculation
+                    "width": width,
+                    "height": height,
+                    "image": base64_image,
+                    "confidence": confidence
+                })
+
+    
+    return bounding_boxes
+
 def sendData(data):
+    """Send ship detection data to the backend"""
     url = 'http://localhost:5000/satdump'
-
-    data = {'Classification': "Merchant",
-            'latitude': 37.7749, # delta from satellite image
-            'longitude': -122.4194, # delta from satellite image
-            'width': '100', # width of ship calculated from pixels  
-            'height': '100', # height of ship calculated from pixels
-            'image': "base64Encode", # base 64 encoded image
-            'confidence': '0.9', # confidence of the model of classification
-            }
-
-
+    
     response = requests.post(url, json=data)
+    if response.status_code != 200:
+        print(f"Error: {response.status_code}")
+        return None
     return response.json()
 
-#base 64 encode the image to send to the backend to display on frontend
-def make_Image():
-    # Read the image and encode it in Base64
-    with open("small_image.png", "rb") as img_file:
-        base64_image = base64.b64encode(img_file.read()).decode("utf-8")
-    return base64_image
-
-
-def predict():
-    data = ul.request.get_json
-    prediction = model.predict(data)
-    return ul.jsonify(prediction)
-
 if __name__ == '__main__':
-    print('Running server...')
-    # run detection model
-    objects = predict()
-    # send datat to backend server
-    sendData(objects)
+    print('Running detection...')
 
+    image_path = "sfbay_1.png"  # Replace with your image
+    objects = get_bounding_boxes(image_path)
+    print("Detected objects:", objects)
 
+    # Send each detected ship's data to the backend
+    for obj in objects:
+        response = sendData(obj)
+        print("Response:", response)
