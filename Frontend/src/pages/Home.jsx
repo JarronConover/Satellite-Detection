@@ -41,6 +41,11 @@ const Home = () => {
 
   return (
     <div className="app-container" style={{ height: "100%" }}>
+
+
+        <div className="text-red-500">
+            watermelon
+        </div>
       <Header
         menuRef={menuRef}
         filtersRef={filtersRef}
