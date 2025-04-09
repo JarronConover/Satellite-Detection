@@ -1,5 +1,6 @@
 from flask import Flask, jsonify
-from flask_cors import CORS, current_app, g
+from flask import current_app, g
+from flask_cors import CORS
 
 # Initialize Flask app
 app = Flask(__name__)
@@ -53,6 +54,7 @@ def get_ships():
 
 @app.route('/satdump', methods=['get'])
 def sat_dump():    
+    return "Satellite data dump endpoint"
 
 if __name__ == "__main__":
     app.run(debug=True)
