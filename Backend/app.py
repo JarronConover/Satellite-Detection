@@ -53,6 +53,7 @@ def get_ships():
 
 @app.route('/satdump', methods=['post'])
 def sat_dump():
+    pass
 
 if __name__ == "__main__":
     app.run(debug=True)
