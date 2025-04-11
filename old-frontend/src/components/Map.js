@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 const apiOptions = {
   apiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
   version: "weekly",
-  libraries: ["drawing"], // Include the Drawing library
+  libraries: ["drawing"], 
 };
 
 function Map({ onMapLoad, center }) {

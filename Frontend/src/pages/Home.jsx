@@ -6,6 +6,7 @@ import FilterModal from "../components/FilterModal";
 import MenuModal from "../components/MenuModal";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Panel from "@/components/Panel";
 
 const Home = () => {
     let { center } = useParams();
@@ -41,10 +42,27 @@ const Home = () => {
     }, [map]);
 
 return (
-    <div className="h-screen flex flex-col w-[100%]">
-        <div>
-            Home
-        </div>
+<div className="flex flex-col">
+    <Panel
+        backgroundImage="/images/map.jpg"
+        title="View the Map"
+        description="Explore ship locations on an interactive map."
+        link="/map"
+      />
+
+      <Panel
+        backgroundImage="/images/Ships.jpg"
+        title="Ship Overview"
+        description="Monitor global ship movements with satellite precision."
+        link="/ships"
+      />
+
+      <Panel
+        backgroundImage="/images/utah.jpg"
+        title="Your Account"
+        description="Manage your settings and preferences."
+        link="/account"
+      />
     </div>
   );
 };

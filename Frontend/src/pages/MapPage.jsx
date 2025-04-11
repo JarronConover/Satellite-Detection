@@ -42,22 +42,6 @@ const MapPage = () => {
 
 return (
     <div className="h-screen flex flex-col w-[100%]">
-        <Navbar
-            menuRef={menuRef}
-            filtersRef={filtersRef}
-            onMenuClick={() => setIsMenuModalOpen(true)}
-            onFiltersClick={() => setIsFilterModalOpen(true)}
-            title={title}
-            isFilters={true}
-        />
-        {/* <Header
-            menuRef={menuRef}
-            filtersRef={filtersRef}
-            onMenuClick={() => setIsMenuModalOpen(true)}
-            onFiltersClick={() => setIsFilterModalOpen(true)}
-            title={title}
-            isFilters={true}
-        /> */}
         <FilterModal
             isOpen={isFilterModalOpen}
             onClose={() => setIsFilterModalOpen(false)}

@@ -13,6 +13,7 @@ import { createClient } from '@supabase/supabase-js'
 import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import Account from "./pages/Account.jsx";
+import { Button } from "./components/ui/button.jsx";
 
 const supabase = createClient(
   'https://ignhwqgpjcbddedvvdym.supabase.co', 
@@ -38,6 +39,23 @@ function App() {
     setSession(null); // Clear session after logout
   };
 
+  const getNavbarTitle = () => {
+    switch (location.pathname) {
+      case "/":
+        return "Satellite Ship Detection";
+      case "/ships":
+        return "Ships";
+      case "/ships/":
+        return "Ship Details";
+      case "/map":
+        return "Map";
+      case "/account":
+        return "Account";
+      default:
+        return "Ship Detection via Satellite"; 
+    }
+  };
+
   if (!session) {
     return (
       <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
@@ -47,24 +65,25 @@ function App() {
   return (
     <SidebarProvider>
       <Router>
-        {/* Sidebar and Router content */}
         <AppSidebar />
         <main className="w-full">
-          <Navbar title={"Ship Detection via Satelite"} add={
-            <button onClick={handleLogout} className="logout-btn">
-              Logout
-            </button>
-          }/>
-          <SidebarTrigger />
+          <Navbar 
+            title={getNavbarTitle()}
+            add={
+              <Button
+                onClick={handleLogout}
+                className="bg-blue-500 text-base text-white px-4 py-2 rounded hover:bg-blue-400 active:scale-96 focus:outline-none transition-transform duration-200 cursor-pointer"
+              >
+                Sign Out
+              </Button>
+            }
+          />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/:center" element={<Home />} />
             <Route path="/ships" element={<Ships />} />
-            <Route path="/ships/filter/:bounds" element={<Ships />} />
             <Route path="/ships/:id" element={<Ship />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/account" element={<Account />} />
-
           </Routes>
         </main>
       </Router>

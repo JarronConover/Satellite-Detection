@@ -38,7 +38,7 @@ const Ship = () => {
     }, [title]);
 
     return (
-        <div>
+        <div className="min-h-screen bg-gray-100">
             <Header
                 menuRef={menuRef}
                 onMenuClick={() => setIsMenuModalOpen(true)}
@@ -50,24 +50,39 @@ const Ship = () => {
                 onClose={() => setIsMenuModalOpen(false)}
                 triggerRef={menuRef}
             />
-            <div className="gap"></div>
-            <div className="ship-details">
-                {ship ? (
-                    <div>
-                        <div className="left">
-                            <h2 className="center_text">Ship Details</h2>
-                            <p><strong>ID:</strong> {ship.id}</p>
-                            <p><strong>Classification:</strong> {ship.classification}</p>
-                            <p><strong>Latitude:</strong> {ship.lat}</p>
-                            <p><strong>Longitude:</strong> {ship.lng}</p>
+            <div className="container mx-auto px-4 py-8">
+                <div className="bg-white shadow-lg rounded-lg p-6">
+                    {ship ? (
+                        <div>
+                            <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Ship Details</h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                <div className="space-y-4">
+                                    <p className="text-lg text-gray-700">
+                                        <strong className="font-semibold">ID:</strong> {ship.id}
+                                    </p>
+                                    <p className="text-lg text-gray-700">
+                                        <strong className="font-semibold">Classification:</strong> {ship.classification}
+                                    </p>
+                                    <p className="text-lg text-gray-700">
+                                        <strong className="font-semibold">Latitude:</strong> {ship.lat}
+                                    </p>
+                                    <p className="text-lg text-gray-700">
+                                        <strong className="font-semibold">Longitude:</strong> {ship.lng}
+                                    </p>
+                                </div>
+                                <div className="flex justify-center items-center">
+                                    <Link to={`/map`}>
+                                        <button className="bg-blue-500 text-white py-2 px-4 rounded-full shadow-md hover:bg-blue-400 transition-all">
+                                            Show on Map
+                                        </button>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
-                        <Link to={`/${ship.lat}_${ship.lng}`}>
-                            <button className="bottom-right">Show on Map</button>
-                        </Link>
-                    </div>
-                ) : (
-                    <p>Ship not found.</p>
-                )}
+                    ) : (
+                        <p className="text-center text-xl text-gray-600">Ship not found.</p>
+                    )}
+                </div>
             </div>
         </div>
     );

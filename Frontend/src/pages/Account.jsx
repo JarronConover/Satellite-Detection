@@ -6,6 +6,7 @@ const Account = () => {
   const [email, setEmail] = useState('')
   const [newEmail, setNewEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
@@ -28,6 +29,10 @@ const Account = () => {
   }
 
   const updatePassword = async () => {
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.")
+      return
+    }
     setLoading(true)
     const { error } = await supabase.auth.updateUser({ password })
     if (error) {
@@ -72,6 +77,16 @@ const Account = () => {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          className="w-full border px-3 py-2 rounded"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block text-sm font-medium mb-1">Confirm New Password:</label>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
           className="w-full border px-3 py-2 rounded"
         />
         <button
