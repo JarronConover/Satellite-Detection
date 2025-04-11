@@ -7,7 +7,7 @@ import MenuModal from "../components/MenuModal";
 import { useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
-const Home = () => {
+const MapPage = () => {
     let { center } = useParams();
     center = center ? center.split("_").map(Number) : null;
     const title = "Map";
@@ -42,11 +42,40 @@ const Home = () => {
 
 return (
     <div className="h-screen flex flex-col w-[100%]">
-        <div>
-            Home
-        </div>
+        <Navbar
+            menuRef={menuRef}
+            filtersRef={filtersRef}
+            onMenuClick={() => setIsMenuModalOpen(true)}
+            onFiltersClick={() => setIsFilterModalOpen(true)}
+            title={title}
+            isFilters={true}
+        />
+        {/* <Header
+            menuRef={menuRef}
+            filtersRef={filtersRef}
+            onMenuClick={() => setIsMenuModalOpen(true)}
+            onFiltersClick={() => setIsFilterModalOpen(true)}
+            title={title}
+            isFilters={true}
+        /> */}
+        <FilterModal
+            isOpen={isFilterModalOpen}
+            onClose={() => setIsFilterModalOpen(false)}
+            filters={filters}
+            setFilters={setFilters}
+            triggerRef={filtersRef}
+        />
+        <MenuModal
+            isOpen={isMenuModalOpen}
+            onClose={() => setIsMenuModalOpen(false)}
+            triggerRef={menuRef}
+        />
+        <div className="flex-grow relative">
+            <Map onMapLoad={setMap} center={center} />
+            <Markers map={map} ships={ships} filters={filters} />
+        </div>      
     </div>
   );
 };
 
-export default Home;
+export default MapPage;
