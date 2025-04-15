@@ -1,10 +1,9 @@
-from flask import Flask, jsonify
-from flask_cors import CORS
+from flask import Flask, jsonify, Blueprint, g, request, status
+from flaskr.db import get_db
 
-# Initialize Flask app
-app = Flask(__name__)
-CORS(app)  # Enable CORS to allow cross-origin requests from React frontend
+ # Enable CORS to allow cross-origin requests from React frontend
 
+bp = Blueprint('main', __name__)
 #Sample Ship data that will get removed once we have a database to draw on
 ships_data = {
     "operaHouse": { "lat": -33.8567844, "lng": 151.213108, "classification": "Cargo", "id": 0 },
@@ -47,13 +46,42 @@ ships_data = {
     "machuPicchu": { "lat": -13.163141, "lng": -72.544963, "classification": "Fishing", "id": 37 },
 }
 
-@app.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
+@bp.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
 def get_ships():
     return jsonify(ships_data)
 
-@app.route('/satdump', methods=['post'])
+@bp.route('/satdump', methods=['post'])
 def sat_dump():
-    pass
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    db = get_db()
+    data = request.json
+
+    classification = data.get('Classification')
+    timestamp = data.get('timestamp')
+    latitude = data.get('latitude')
+    longitude = data.get('longitude')
+    width = data.get('width')
+    height = data.get('height')
+    image = data.get('image')
+    confidence = data.get('confidence')
+
+    danger = 0
+
+    try:
+        db.execute(
+            "INSERT INTO ship (classification, lattitude, longitude, img, width, height, confidence, time, danger) VALUES (?,?,?,?,?,?,?,?,?)",
+            (classification, timestamp, latitude, longitude, width, height, image, confidence, danger))
+        db.commit()
+    except:
+        pass
+
+    return status.HTTP_200_OK
+
+#"Classification": label,
+ #                       "timestamp": time.time(),  # Current timestamp
+  #                      "latitude": 37.7749,  # Placeholder, need actual calculation
+   #                     "longitude": -122.4194,  # Placeholder, need actual calculation
+    #                    "width": width,
+     #                   "height": height,
+      #                  "image": base64_image,
+       #                 "confidence": confidence

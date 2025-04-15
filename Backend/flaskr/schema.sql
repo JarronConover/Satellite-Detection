@@ -2,8 +2,13 @@ DROP TABLE IF EXISTS ship;
 
 CREATE TABLE ship (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT,
-  lattitude INTEGER,
-  longitude INTEGER,
-  classification TEXT
+  classification TEXT,
+  lattitude REAL,
+  longitude REAL,
+  img TEXT,
+  width REAL,
+  height REAL,
+  confidence REAL,
+  time REAL,
+  danger INTEGER
 );
