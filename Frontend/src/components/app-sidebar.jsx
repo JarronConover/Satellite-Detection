@@ -1,4 +1,4 @@
-import { Calendar, Home, Inbox, Search, Settings, Ship, Map, Filter, ChevronDown, User } from "lucide-react"; // Import ChevronDown icon
+import { Home, User, Map, Ship } from "lucide-react";
 
 import {
   Sidebar,
@@ -11,24 +11,12 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar";
 
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
-
 // Define the main menu items
 const items = [
   {
     title: "Home",
     url: "/",
     icon: Home,
-  },
-  {
-    title: "Account",
-    url: "/account",
-    icon: User,
   },
   {
     title: "Map",
@@ -40,15 +28,11 @@ const items = [
     url: "/ships",
     icon: Ship,
   },
-];
-
-// Get Filters to work properly
-// Define the filter options
-const filterOptions = [
-  "Cargo",
-  "Fishing",
-  "Warship",
-  "Unauthorized"
+  {
+    title: "Account",
+    url: "/account",
+    icon: User,
+  },
 ];
 
 export function AppSidebar() {
@@ -56,44 +40,22 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-lg font-semibold mx-4 my-2">Menu</SidebarGroupLabel>
           <SidebarGroupContent>
-            <SidebarMenu>
+            <SidebarMenu className={"mx-4 my-2"}>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-
-        {/* Filter Dropdown */}
-        <SidebarGroup>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              <SidebarMenuItem>
-                <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <SidebarMenuButton>
-                     Filters
-                      <ChevronDown className="ml-auto" />
-                    </SidebarMenuButton>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-[--radix-popper-anchor-width]">
-                    {filterOptions.map((filter) => (
-                      <DropdownMenuItem key={filter}>
-                        <span>{filter}</span>
-                      </DropdownMenuItem>
-                    ))}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <SidebarMenuButton asChild>
+                  <a href={item.url} className="flex items-center gap-3 text-lg group transition-transform duration-200 hover:scale-110">
+                    <item.icon
+                      className="w-12 h-12 "
+                      strokeWidth={2}
+                    />
+                    <span className="text-lg font-small">{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
               </SidebarMenuItem>
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

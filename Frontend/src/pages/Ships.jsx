@@ -58,9 +58,15 @@ const Ships = () => {
         }, {})
     : ships;
 
+    const sortedShips = Object.values(filteredShips).sort((a, b) => {
+      if (a.classification === "Unauthorized" && b.classification !== "Unauthorized") return -1;
+      if (a.classification !== "Unauthorized" && b.classification === "Unauthorized") return 1;
+      return 0;
+    });
+
   return (
     <div className="bg-gray-50 min-h-screen">
-      <Header
+      {/* <Header
         menuRef={menuRef}
         filtersRef={filtersRef}
         onMenuClick={() => setIsMenuModalOpen(true)}
@@ -79,49 +85,53 @@ const Ships = () => {
         isOpen={isMenuModalOpen}
         onClose={() => setIsMenuModalOpen(false)}
         triggerRef={menuRef}
-      />
+      /> */}
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 space-x-4">
         {/* Filters */}
-        <div className="flex justify-between items-center mb-6">
-          <div className="flex space-x-4">
-            <Button
-              variant="outline"
-              onClick={() => setIsFilterModalOpen(true)}
-              className="bg-white border-2 border-gray-400 text-gray-700 hover:bg-gray-200"
-            >
-              Filter Ships
-            </Button>
-          </div>
+        <div className="relative top-10 -left-38 z-50">
+          <Button
+            variant="outline"
+            onClick={() => setIsFilterModalOpen(true)}
+            className="bg-white border-2 border-gray-400 text-gray-700 hover:bg-gray-200 shadow-md"
+          >
+            Filter Ships
+          </Button>
         </div>
 
         {/* Ships List */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {filteredShips && Object.keys(filteredShips).length > 0 ? (
-            Object.keys(filteredShips).map((shipKey) => {
-              const ship = filteredShips[shipKey];
-              return (
+            sortedShips.map((ship) => (
+              <Link key={ship.id} to={`/ships/${ship.id}`} className="transform transition-transform hover:scale-105">
                 <div
-                  key={ship.id}
-                  className="bg-white shadow-md rounded-lg p-4 flex flex-col items-center justify-between space-y-4 hover:shadow-xl transition-all"
+                  className={`cursor-pointer rounded-lg p-4 flex flex-col items-center justify-between space-y-4 transition-all duration-200 shadow-md hover:shadow-xl hover:bg-opacity-90 ${
+                    ship.classification === "Unauthorized"
+                      ? "border-4 border-red-500 bg-red-100"
+                      : ship.classification === "Fishing"
+                      ? "border-4 border-blue-500 bg-blue-100"
+                      : ship.classification === "Warship"
+                      ? "border-4 border-green-500 bg-green-100"
+                      : ship.classification === "Cargo"
+                      ? "border-4 border-purple-500 bg-purple-100"
+                      : "border border-gray-200 bg-white"
+                  }`}
                 >
                   <div className="text-center space-y-2">
                     <h3 className="text-xl font-semibold text-gray-800">{ship.classification}</h3>
+                    <img
+                      src={ship.image || "/images/default.png"}
+                      alt={`${ship.classification} image`}
+                      className="w-20 h-20 mx-auto object-contain rounded-md shadow"
+                    />
                     <p className="text-gray-500">ID: {ship.id}</p>
                     <p className="text-gray-500">
                       <strong>Location:</strong> Lat: {ship.lat}, Lng: {ship.lng}
                     </p>
                   </div>
-                  <div className="w-full text-center">
-                    <Link to={`/ships/${ship.id}`}>
-                      <Button className="bg-blue-500 text-white hover:bg-blue-400 py-2 px-4 rounded-full">
-                        View Details
-                      </Button>
-                    </Link>
-                  </div>
                 </div>
-              );
-            })
+              </Link>
+            ))
           ) : (
             <p className="text-center text-xl text-gray-600 col-span-full">No ships found.</p>
           )}

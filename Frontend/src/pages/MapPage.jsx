@@ -41,7 +41,7 @@ const MapPage = () => {
     }, [map]);
 
 return (
-    <div className="h-screen flex flex-col w-[100%]">
+    <div className="h-[calc(100vh-64px)] flex flex-col w-full">
         <FilterModal
             isOpen={isFilterModalOpen}
             onClose={() => setIsFilterModalOpen(false)}

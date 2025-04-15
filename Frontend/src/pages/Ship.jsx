@@ -37,55 +37,75 @@ const Ship = () => {
         document.title = title;
     }, [title]);
 
-    return (
-        <div className="min-h-screen bg-gray-100">
-            <Header
-                menuRef={menuRef}
-                onMenuClick={() => setIsMenuModalOpen(true)}
-                title={title}
-                isFilters={false}
-            />
-            <MenuModal
-                isOpen={isMenuModalOpen}
-                onClose={() => setIsMenuModalOpen(false)}
-                triggerRef={menuRef}
-            />
-            <div className="container mx-auto px-4 py-8">
-                <div className="bg-white shadow-lg rounded-lg p-6">
-                    {ship ? (
+            return (
+                <div className="min-h-screen bg-gray-100">
+                    
+                    {/* <Header
+                        menuRef={menuRef}
+                        onMenuClick={() => setIsMenuModalOpen(true)}
+                        title={title}
+                        isFilters={false}
+                    />
+                    <MenuModal
+                        isOpen={isMenuModalOpen}
+                        onClose={() => setIsMenuModalOpen(false)}
+                        triggerRef={menuRef}
+                    /> */}
+
+                  <div className="container mx-auto px-4 py-8">
+                    <div className="bg-white shadow-lg rounded-lg p-6">
+                      {ship ? (
                         <div>
-                            <h2 className="text-3xl font-semibold text-center text-gray-800 mb-6">Ship Details</h2>
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                                <div className="space-y-4">
-                                    <p className="text-lg text-gray-700">
-                                        <strong className="font-semibold">ID:</strong> {ship.id}
-                                    </p>
-                                    <p className="text-lg text-gray-700">
-                                        <strong className="font-semibold">Classification:</strong> {ship.classification}
-                                    </p>
-                                    <p className="text-lg text-gray-700">
-                                        <strong className="font-semibold">Latitude:</strong> {ship.lat}
-                                    </p>
-                                    <p className="text-lg text-gray-700">
-                                        <strong className="font-semibold">Longitude:</strong> {ship.lng}
-                                    </p>
-                                </div>
-                                <div className="flex justify-center items-center">
-                                    <Link to={`/map`}>
-                                        <button className="bg-blue-500 text-white py-2 px-4 rounded-full shadow-md hover:bg-blue-400 transition-all">
-                                            Show on Map
-                                        </button>
-                                    </Link>
-                                </div>
+                          {/* Title */}
+                          <h2 className="text-3xl font-semibold text-center text-gray-800 mb-4">Ship Details</h2>
+              
+                          {/* Ship Image */}
+                          {ship.image && (
+                            <div className="flex justify-center mb-6">
+                              <img
+                                src={ship.image}
+                                alt={`${ship.classification} ship`}
+                                className="w-64 h-64 object-contain rounded-lg shadow-md"
+                              />
                             </div>
+                          )}
+              
+                          {/* Ship Details Grid */}
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                            <div className="space-y-4 text-lg text-gray-700">
+                              <p>
+                                <strong className="font-semibold">ID:</strong> {ship.id}
+                              </p>
+                              <p>
+                                <strong className="font-semibold">Classification:</strong> {ship.classification}
+                              </p>
+                              <p>
+                                <strong className="font-semibold">Latitude:</strong> {ship.lat}
+                              </p>
+                              <p>
+                                <strong className="font-semibold">Longitude:</strong> {ship.lng}
+                              </p>
+                            </div>
+              
+                            {/* Button */}
+                            <div className="flex justify-center items-center">
+                              <Link to="/map">
+                                <button className="bg-blue-500 text-white py-2 px-6 rounded-full shadow hover:bg-blue-400 transition-all">
+                                  Show on Map
+                                </button>
+                              </Link>
+                            </div>
+                          </div>
                         </div>
-                    ) : (
+                      ) : (
                         <p className="text-center text-xl text-gray-600">Ship not found.</p>
-                    )}
+                      )}
+                    </div>
+                  </div>
                 </div>
-            </div>
-        </div>
-    );
+              );
+              
+              
 };
 
 export default Ship;

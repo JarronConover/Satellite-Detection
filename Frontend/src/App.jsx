@@ -14,6 +14,7 @@ import { Auth } from '@supabase/auth-ui-react'
 import { ThemeSupa } from '@supabase/auth-ui-shared'
 import Account from "./pages/Account.jsx";
 import { Button } from "./components/ui/button.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 const supabase = createClient(
   'https://ignhwqgpjcbddedvvdym.supabase.co', 
@@ -22,17 +23,25 @@ const supabase = createClient(
 
 function App() {
   const [session, setSession] = useState(null)
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
+      setSession(session);
+      setLoading(false);
     })
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session)
+      setSession(session);
+      setLoading(false);
     })
     return () => subscription.unsubscribe()
   }, [])
+
+  if (loading) {
+    return <div className="flex items-center justify-center h-screen">Loading...</div>;
+  }
 
   const handleLogout = async () => {
     await supabase.auth.signOut();
@@ -63,7 +72,7 @@ function App() {
   }
   else {
   return (
-    <SidebarProvider>
+    <SidebarProvider defaultOpen={false}>
       <Router>
         <AppSidebar />
         <main className="w-full">
@@ -84,6 +93,7 @@ function App() {
             <Route path="/ships/:id" element={<Ship />} />
             <Route path="/map" element={<MapPage />} />
             <Route path="/account" element={<Account />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </main>
       </Router>
