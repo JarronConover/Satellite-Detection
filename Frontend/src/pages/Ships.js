@@ -29,7 +29,11 @@ const Ships = () => {
       }
     };
 
-    fetchShips();
+    fetchShips(); // Initial Fetch
+
+    const interval = setInterval(fetchShips, 5000);
+
+    return () => clearInterval(interval)
   }, []);
 
   // Update the document title
