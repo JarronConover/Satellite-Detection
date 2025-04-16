@@ -24,7 +24,7 @@ const items = [
     icon: Map,
   },
   {
-    title: "Ship",
+    title: "Ships",
     url: "/ships",
     icon: Ship,
   },

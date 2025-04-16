@@ -89,7 +89,7 @@ const Ships = () => {
 
       <div className="container mx-auto px-4 space-x-4">
         {/* Filters */}
-        <div className="relative top-10 -left-38 z-50">
+        <div className="py-4">
           <Button
             variant="outline"
             onClick={() => setIsFilterModalOpen(true)}

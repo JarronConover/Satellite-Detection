@@ -67,7 +67,12 @@ function App() {
 
   if (!session) {
     return (
-      <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="w-full max-w-xl p-8 bg-white rounded-xl shadow-md">
+          <Auth supabaseClient={supabase} appearance={{ theme: ThemeSupa }} />
+        </div>
+      </div>
+
     )
   }
   else {
