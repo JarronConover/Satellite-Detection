@@ -31,7 +31,11 @@ const Home = () => {
       }
     };
 
-    fetchShips();
+    fetchShips(); // Initial fetch
+
+    const interval = setInterval(fetchShips, 5000);
+
+    return () => clearInterval(interval)
   }, []);
 
   useEffect(() => {
