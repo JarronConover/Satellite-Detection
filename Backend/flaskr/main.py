@@ -1,5 +1,8 @@
-from flask import Flask, jsonify, Blueprint, g, request, status
+from flask import Flask, jsonify, Blueprint, g, request
 from flaskr.db import get_db
+import asyncio
+import websockets
+import json
 
  # Enable CORS to allow cross-origin requests from React frontend
 
@@ -75,7 +78,7 @@ def sat_dump():
     except:
         pass
 
-    return status.HTTP_200_OK
+    return #status.HTTP_200_OK
 
 #"Classification": label,
  #                       "timestamp": time.time(),  # Current timestamp
