@@ -18,13 +18,16 @@ class ais_ships:
     
     def get(latitude, longitude):
         with l:
-            out = {}
-            for ship in data:
-                if (latitude - ERROR < data[ship][0] < latitude + ERROR) and (longitude - ERROR < data[ship][1] < longitude + ERROR):
-                    if time.time() - data[ship][2] > 60:
-                        data.pop(ship)
-                    else:
-                        out.append({ship: data[ship]})
+            temp = dict(data)
+
+
+        out = {}
+        for ship in temp:
+            if (latitude - ERROR < temp[ship][0] < latitude + ERROR) and (longitude - ERROR < temp[ship][1] < longitude + ERROR):
+                if time.time() - data[ship][2] > 60:
+                    data.pop(ship)
+                else:
+                    out.append({ship: data[ship]})
         
         return out
                     
