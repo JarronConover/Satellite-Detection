@@ -89,20 +89,15 @@ def get_bounding_boxes(image_path, device):
 
     return bounding_boxes
 
+
 def sendData(data):
-    """Send ship detection data to the backend"""
     url = 'http://127.0.0.1:5000/satdump'
-
-    headers = {'Content-Type': 'application/json'}
-    json_data = json.dumps(data)
-
-    # Send the data to the backend
-
-    response = requests.post(url, headers=headers, json=json_data)
-    if response.status_code != 200:
-        print(f"Error: {response.status_code}")
+    # no headers needed if you use the json= kwarg
+    resp = requests.post(url, json=data)
+    if resp.status_code != 200:
+        print(f"Error: {resp.status_code}")
         return None
-    return response.json()
+    return resp.json()
 
 if __name__ == '__main__':
     image_path = "sfbay_1.png"  # Replace with your image

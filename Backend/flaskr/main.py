@@ -24,22 +24,32 @@ def get_ships_id(id):
 
     return jsonify(ship, status=200, mimetype='application/json')
 
-@bp.route('/satdump', methods=['post'])
+
+
+@bp.route('/satdump', methods=['POST'])
 def sat_dump():
-
     db = get_db()
-    data = json.loads(request.json)
+    payload = request.get_json()  # this is your dict or list
+    
+    # If you're sending a list of boxes:
+    for entry in payload:
+        classification = entry["Classification"]
+        timestamp      = entry["timestamp"]
+        latitude       = entry["latitude"]
+        longitude      = entry["longitude"]
+        width          = entry["width"]
+        height         = entry["height"]
+        image      = entry["image"]
+        confidence     = entry["confidence"]
 
-    classification = data.get('Classification')
-    timestamp = data.get('timestamp')
-    latitude = data.get('latitude')
-    longitude = data.get('longitude')
-    width = data.get('width')
-    height = data.get('height')
-    image = data.get('image')
-    confidence = data.get('confidence')
+        danger = 1
 
-    danger = 1
+        # todo: insert into your DB here
+        # e.g. db.execute(..., (classification, timestamp, ...))
+    
+    db.commit()
+    # send back a JSON ack
+    return jsonify({"status":"ok", "received": len(payload)})
     
 
     try:
