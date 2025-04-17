@@ -14,7 +14,6 @@ bp = Blueprint('main', __name__)
 @bp.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
 def get_ships():
     db = get_db()
-    db.execute("INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (test, 1.222, 1.222, asdfasda, 1, 1, 1, ?, 1)", (time.time()))
     ships = db.execute('SELECT * FROM ship').fetchall()
     return jsonify(ships, status=200, mimetype='application/json')
 

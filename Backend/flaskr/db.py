@@ -27,6 +27,9 @@ def init_db():
 
     with current_app.open_resource('schema.sql') as f:
         db.executescript(f.read().decode('utf8'))
+        
+
+    db.execute("INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (?, ?, ?, ?, ?, ?, ?, ?))", ("test", 1.1, 1.1, "asdca", 1, time.time(), 1))
 
 
 @click.command('init-db')
