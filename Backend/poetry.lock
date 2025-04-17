@@ -64,6 +64,21 @@ async = ["asgiref (>=3.2)"]
 dotenv = ["python-dotenv"]
 
 [[package]]
+name = "flask-api"
+version = "3.1"
+description = "Browsable web APIs for Flask."
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "Flask-API-3.1.tar.gz", hash = "sha256:cb079845f5573eac55c6800a9a142bd7b54fd1227019a21cb2f75dfe5311d44f"},
+    {file = "Flask_API-3.1-py3-none-any.whl", hash = "sha256:08cb377412ff1b6bea47e8a5ffefc592a149f8686045038df6e116d12ab5d4e9"},
+]
+
+[package.dependencies]
+Flask = ">=2.0.0"
+
+[[package]]
 name = "itsdangerous"
 version = "2.2.0"
 description = "Safely pass data to untrusted environments and back."
@@ -279,4 +294,4 @@ watchdog = ["watchdog (>=2.3)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13"
-content-hash = "342f7d00d5fb2e3a6fcde2d0c1e92afe1e98521f3a57de32570349d1f43e71c9"
+content-hash = "9251f9a441d19bfffdcf546ca33bcb6c2537d7007cf922fb1a6f0e5eb751919b"

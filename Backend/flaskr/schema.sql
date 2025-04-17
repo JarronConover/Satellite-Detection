@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS ship;
 CREATE TABLE ship (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   classification TEXT,
-  lattitude REAL,
+  latitude REAL,
   longitude REAL,
   img TEXT,
   width REAL,
