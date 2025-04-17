@@ -12,11 +12,13 @@ bp = Blueprint('main', __name__)
 
 @bp.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
 def get_ships():
+    db = get_db()
     ships = db.execute('SELECT * FROM ship').fetchall()
     return jsonify(ships, status=200, mimetype='application/json')
 
 @bp.route('/api/ships/<int:id>')
 def get_ships_id(id):
+    db = get_db()
     ship = db.execute('SELECT * FROM ship WHERE id = ?', (id,)).fetchone()
 
     if (ship is None):
@@ -55,7 +57,7 @@ def sat_dump():
     try:
         db.execute(
             "INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (?,?,?,?,?,?,?,?,?)",
-            (classification, timestamp, latitude, longitude, width, height, image, confidence, danger))
+            (classification, latitude, longitude, width, image, height, confidence, timestamp, danger))
         db.commit()
     except:
         pass
