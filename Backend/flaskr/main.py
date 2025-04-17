@@ -28,7 +28,7 @@ def get_ships_id(id):
 def sat_dump():
 
     db = get_db()
-    data = json.loads(request.data)
+    data = json.loads(request.json)
 
     classification = data.get('Classification')
     timestamp = data.get('timestamp')
