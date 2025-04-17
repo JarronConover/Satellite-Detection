@@ -2,6 +2,8 @@ from flask import Flask, jsonify, Blueprint, g, request
 from flaskr.db import get_db
 import asyncio
 import json
+import websockets
+from datetime import datetime, timezone
 
  # Enable CORS to allow cross-origin requests from React frontend
 
@@ -51,7 +53,7 @@ ships_data = {
 async def connect_ais_stream():
 
     async with websockets.connect("wss://stream.aisstream.io/v0/stream") as websocket:
-        subscribe_message = {"APIKey": "<API KEY>",  # Required !
+        subscribe_message = {"APIKey": "54fd66873359f819fab51694d01a39f847d8795b",  # Required !
                              "BoundingBoxes": [[[-90, -180], [90, 180]]], # Required!
                              "FiltersShipMMSI": ["368207620", "367719770", "211476060"], # Optional!
                              "FilterMessageTypes": ["PositionReport"]} # Optional!
