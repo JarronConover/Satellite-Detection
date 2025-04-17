@@ -1,3 +1,40 @@
+import threading
+import time
+
+ERROR = 0.001
+
+class ais_ships:
+    data: dict
+    l = threading.lock()
+
+    def add(id: int, latitude, longitude):
+        with l:
+            data.update({id: (latitude, longitude, time.time())})
+
+    def id_get(id: int):
+        with l:
+            out = data[id]
+        return out
+    
+    def get(latitude, longitude):
+        with l:
+            out = {}
+            for ship in data:
+                if (latitude - ERROR < data[ship][0] < latitude + ERROR) and (longitude - ERROR < data[ship][1] < longitude + ERROR):
+                    if time.time() - data[ship][2] > 60:
+                        data.pop(ship)
+                    else:
+                        out.append({ship: data[ship]})
+        
+        return out
+                    
+
+
+
+
+
+
+
 async def connect_ais_stream(latitude, longitude, width, height):
 
     async with websockets.connect("wss://stream.aisstream.io/v0/stream") as websocket:
