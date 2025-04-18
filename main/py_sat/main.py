@@ -92,11 +92,27 @@ def get_bounding_boxes(image_path, device):
 
 def sendData(data):
     url = 'http://127.0.0.1:5000/satdump'
-    # no headers needed if you use the json= kwarg
     resp = requests.post(url, json=data)
+
+    if resp is None:
+        print("Error: No response from server")
+        return None
+
     if resp.status_code != 200:
         print(f"Error: {resp.status_code}")
         return None
+
+    if not resp.text.strip():  # Check if response is empty
+        print("Error: Empty response from server")
+        return None
+
+    try:
+        return resp.json()
+    except requests.exceptions.JSONDecodeError as e:
+        print(f"JSON decoding error: {e}")
+        return None
+    
+
     return resp.json()
 
 if __name__ == '__main__':

@@ -14,19 +14,17 @@ bp = Blueprint('main', __name__)
 @bp.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
 def get_ships():
     db = get_db()
-    ships = db.execute('SELECT * FROM ship').fetchall()
-    return jsonify(ships, status=200, mimetype='application/json')
+    ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
+    return jsonify(ships), 200
 
 @bp.route('/api/ships/<int:id>')
 def get_ships_id(id):
     db = get_db()
-    ship = db.execute('SELECT * FROM ship WHERE id = ?', (id,)).fetchone()
+    ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
 
-    if (ship is None):
-        abort(404, f"ship {id} does not exist")
+    print(ships)
 
-    return jsonify(ship, status=200, mimetype='application/json')
-
+    return jsonify(ships), 200
 
 
 @bp.route('/satdump', methods=['POST'])
