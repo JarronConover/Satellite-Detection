@@ -30,13 +30,14 @@ def init_db():
         db.executescript(f.read().decode('utf8'))
         
 
-    db.execute("INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (?, ?, ?, ?, ?, ?, ?, ?))", ("test", 1.1, 1.1, "asdca", 1, time.time(), 1))
-
 
 @click.command('init-db')
 def init_db_command():
     """Clear the existing data and create new tables."""
     init_db()
+    db = get_db()
+    db.execute("INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", ("test", 1.1, 1.1, "asdca", 1, 1, 1, time.time(), 1))
+    db.commit()
     click.echo('Initialized the database.')
 
 def init_app(app):
