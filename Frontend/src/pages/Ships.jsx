@@ -119,11 +119,7 @@ const Ships = () => {
                 >
                   <div className="text-center space-y-2">
                     <h3 className="text-xl font-semibold text-gray-800">{ship.classification}</h3>
-                    <img
-                      src={ship.image || "/images/default.png"}
-                      alt={`${ship.classification} image`}
-                      className="w-20 h-20 mx-auto object-contain rounded-md shadow"
-                    />
+                    <img src={`data:image/png;base64,${ship.img}`} alt={ship.name} />
                     <p className="text-gray-500">ID: {ship.id}</p>
                     <p className="text-gray-500">
                       <strong>Location:</strong> Lat: {ship.lat}, Lng: {ship.lng}
