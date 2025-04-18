@@ -15,6 +15,7 @@ bp = Blueprint('main', __name__)
 def get_ships():
     db = get_db()
     ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
+
     return jsonify(ships), 200
 
 @bp.route('/api/ships/<int:id>')
@@ -22,7 +23,8 @@ def get_ships_id(id):
     db = get_db()
     ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
 
-    print(ships)
+    if (ships is None):
+        abort(404, f"ship {id} does not exist")
 
     return jsonify(ships), 200
 
