@@ -56,15 +56,16 @@ async def connect_ais_stream(latitude, longitude):
         subscribe_message_json = json.dumps(subscribe_message)
         await websocket.send(subscribe_message_json)
 
-        async for message_json in websocket:
-            message = json.loads(message_json)
-            print(message)
-            message_type = message["MessageType"]
+        try:
+            with asyncio.timeout(3):
+                message = websocket.recv()
+                if message is not None:
+                    return False
+                else:
+                    return True
+        except:
+            return True
 
-
-            if message_type == "PositionReport":
-                # the message parameter contains a key of the message type which contains the message itselfc
-                ais_message = message['Message']['PositionReport']
-                print(f"[{datetime.now(timezone.utc)}] ShipId: {ais_message['UserID']} Latitude: {ais_message['Latitude']} Latitude: {ais_message['Longitude']}")
+        
 
 asyncio.run(asyncio.run(connect_ais_stream(37.79463, -122.39112833333334)))
