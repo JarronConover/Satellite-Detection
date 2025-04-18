@@ -8,14 +8,25 @@ import websockets
 from datetime import datetime, timezone
 
 ERROR = 0.001
+MAX_AIS_SHIPS = 100
 
 class ais_ships:
-    data: dict
+    data = dict()
+    dataQueue = list()
     l = threading.Lock()
 
     def add(id: int, latitude, longitude):
         with l:
             data.update({id: (latitude, longitude, time.time())})
+            try:
+                dataQueue.remove(id)
+            except:
+                pass
+            dataQueue.append(id)
+
+            if len(dataQueue) > MAX_AIS_SHIPS:
+                data.pop(dataQueue[0])
+                dataQueue.pop(0)
 
     def id_get(id: int):
         with l:
@@ -30,10 +41,8 @@ class ais_ships:
         out = {}
         for ship in temp:
             if (latitude - ERROR < temp[ship][0] < latitude + ERROR) and (longitude - ERROR < temp[ship][1] < longitude + ERROR):
-                if time.time() - data[ship][2] > 60:
-                    data.pop(ship)
-                else:
-                    out.append({ship: data[ship]})
+                out.append({ship: data[ship]})
+                    
         
         return out
                     
@@ -44,27 +53,27 @@ class ais_ships:
 
 
 
-async def connect_ais_stream(latitude, longitude):
+async def connect_ais_stream():
 
     load_dotenv()    
 
     async with websockets.connect("wss://stream.aisstream.io/v0/stream") as websocket:
         subscribe_message = {"APIKey": os.getenv("AISSTREAM_API_KEY"),  # Required !
-                             "BoundingBoxes": [[[latitude - ERROR, longitude - ERROR], [latitude + ERROR, longitude + ERROR]]], # Required!
+                             "BoundingBoxes": [[[37.80376186032549, -122.40499702549884], [37.586018392312226, -122.12453445534551]]], # Required!
                              "FilterMessageTypes": ["PositionReport"]} # Optional!
 
         subscribe_message_json = json.dumps(subscribe_message)
         await websocket.send(subscribe_message_json)
 
-        try:
-            with asyncio.timeout(3):
-                message = websocket.recv()
-                if message is not None:
-                    return False
-                else:
-                    return True
-        except:
-            return True
+        
+        async for message_json in websocket:
+            message = json.loads(message_json)
+            message_type = message["MessageType"]
+
+            if message_type == "PositionReport":
+                # the message parameter contains a key of the message type which contains the message itself
+                ais_message = message['Message']['PositionReport']
+                print(f"[{datetime.now(timezone.utc)}] ShipId: {ais_message['UserID']} Latitude: {ais_message['Latitude']} Latitude: {ais_message['Longitude']}")
 
         
 
