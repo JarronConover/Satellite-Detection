@@ -9,8 +9,39 @@ import numpy as np
 import torch
 import time
 import json
+import math
 
 model = YOLO("best.pt")
+meters_per_pixel = 2.97
+
+center_lat = 37.757481
+center_lon = -122.363672
+
+METERS_PER_DEGREE_LAT = 111_320  # approx. at all latitudes
+
+def meters_per_degree_lon(lat):
+    return 111_320 * math.cos(math.radians(lat))
+
+def pixel_to_latlon(px, py, img_w, img_h):
+    """
+    px,py = pixel coords in full image
+    img_w,img_h = full image size
+    returns (lat, lon)
+    """
+    # offset from image center in px
+    dx = px - img_w/2
+    dy = py - img_h/2
+
+    # convert px ➔ meters
+    mx = dx * meters_per_pixel
+    my = dy * meters_per_pixel
+
+    # convert meters ➔ degrees
+    dlat = - (my  / METERS_PER_DEGREE_LAT)   # negative because y‐down is south
+    mlon = mx  / meters_per_degree_lon(center_lat)
+
+    return center_lat + dlat, center_lon + mlon
+
 
 def get_best_device():
     if torch.cuda.is_available():
@@ -21,75 +52,55 @@ def get_best_device():
         return "cpu"  # Fallback to CPU
 
 def split_image_in_memory(image_path, tile_size=(640, 640)):
-    """Split an image into tiles without saving them to disk"""
     img = Image.open(image_path)
-    img_array = np.array(img)
-
-    img_height, img_width, _ = img_array.shape
+    w, h = img.size
     tiles = []
+    for x in range(0, w, tile_size[0]):
+        for y in range(0, h, tile_size[1]):
+            box = (x, y, min(x+tile_size[0], w), min(y+tile_size[1], h))
+            tile = img.crop(box)
+            tiles.append((tile, x, y))
+    return w, h, tiles
 
-    for i in range(0, img_width, tile_size[0]):
-        for j in range(0, img_height, tile_size[1]):
-            tile = img_array[j:j+tile_size[1], i:i+tile_size[0], :]
-            tiles.append(Image.fromarray(tile))
 
-    return tiles
 
 def get_bounding_boxes(image_path, device):
-    """Run prediction and extract bounding boxes"""
-    tiles = split_image_in_memory(image_path)  
-    bounding_boxes = []
+    img_w, img_h, tiles = split_image_in_memory(image_path)
+    bboxes = []
 
-    for tile in tiles:
-        tile = np.array(tile)
-        tile_bgr = cv2.cvtColor(tile, cv2.COLOR_RGB2BGR)  # Convert to BGR for OpenCV
+    for tile, x_off, y_off in tiles:
+        arr = cv2.cvtColor(np.array(tile), cv2.COLOR_RGB2BGR)
+        results = model.predict(arr, conf=0.5, iou=0.5, device=device, show=False)
+        for res in results:
+            if res.boxes is not None:
+                # Iterate through each detected box
+                # res.boxes.xyxy is a tensor of shape (N, 4) where N is the number of boxes
+                # Each box is represented by [x1, y1, x2, y2]
+                # res.boxes.cls is a tensor of shape (N,) containing class indices
+                # res.boxes.conf is a tensor of shape (N,) containing confidence scores
+                for box in res.boxes:
+                    x1, y1, x2, y2 = map(int, box.xyxy[0])
+                    cx, cy = (x1+x2)/2, (y1+y2)/2
 
+                    # convert to full‑image pixel coords
+                    full_cx = x_off + cx
+                    full_cy = y_off + cy
 
-        # for production we need to make sure the device is set to cuda and show is false
+                    lat, lon = pixel_to_latlon(full_cx, full_cy, img_w, img_h)
 
-        # maybe we can check if the device is available and set it to cuda or mps
-        # Check if the device is available
-
-        if device == 'cuda':
-            results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='cuda', show=False)
-        elif device == 'mps':
-            results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='mps', show=True)
-        else:
-            # Fallback to CPU
-            results = model.predict(tile_bgr, conf=0.5, iou=0.5, device='cpu', show=False)
-
-
-        for result in results:  # Iterate over results (list of `Result` objects)
-            if result.boxes is not None:  # Ensure boxes exist
-                for box in result.boxes:
-                    x_min, y_min, x_max, y_max = map(int, box.xyxy[0])  # Extract coordinates
-                    confidence = float(box.conf[0])  # Confidence score
-                    label = model.names[int(box.cls[0])]  # Class label
-
-                    width = x_max - x_min
-                    height = y_max - y_min
-
-                    # Crop the detected object
-                    cropped_img = tile_bgr[y_min:y_max, x_min:x_max]
-
-                    # Convert cropped image to Base64
-                    _, buffer = cv2.imencode('.png', cropped_img)
-                    base64_image = base64.b64encode(buffer).decode("utf-8")
-
-                    bounding_boxes.append({
-                        "Classification": label,
-                        "timestamp": time.time(),  # Current timestamp
-                        "latitude": 37.7749,  # Placeholder, need actual calculation
-                        "longitude": -122.4194,  # Placeholder, need actual calculation
-                        "width": width,
-                        "height": height,
-                        "image": base64_image,
-                        "confidence": confidence
+                    bboxes.append({
+                        "Classification": model.names[int(box.cls[0])],
+                        "timestamp": time.time(),
+                        "latitude": lat,
+                        "longitude": lon,
+                        "width": x2-x1,
+                        "height": y2-y1,
+                        "image": base64.b64encode(
+                            cv2.imencode('.png', arr[y1:y2, x1:x2])[1]
+                        ).decode(),
+                        "confidence": float(box.conf[0])
                     })
-
-                    print(f"Detected {label} with confidence {confidence:.2f} at ({x_min}, {y_min}) to ({x_max}, {y_max})")
-
-    return bounding_boxes
+    return bboxes
 
 
 def sendData(data):
