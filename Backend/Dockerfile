@@ -13,6 +13,7 @@ WORKDIR /app
 
 # ---------- 4. Install Python deps ----------
 # copy only requirements first so Docker can cache this layer
+# this is a good practice to speed up builds
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
