@@ -12,17 +12,17 @@ const Markers = ({ map, ships, filters }) => {
     // Add markers based on filtered ships
     for (const ship in ships) {
       const shp = ships[ship];
-      if (!filters.includes(shp.classification)) continue; // Skip markers outside filters
+      // if (!filters.includes(shp.classification)) continue; // Skip markers outside filters
 
       const marker = new google.maps.Marker({
-        position: { lat: shp.lat, lng: shp.lng },
+        position: { lat: shp.latitude, lng: shp.longitude },
         icon: { url: `./img/${shp.classification.toLowerCase()}.png` },
       });
 
       marker.classification = shp.classification;
 
       const infoWindow = new google.maps.InfoWindow({
-        content: `<div><h3><a href="/ships/${shp.id}">${shp.id}: ${shp.classification}</a></h3><p>Latitude: ${shp.lat}</p><p>Longitude: ${shp.lng}</p></div>`,
+        content: `<div><h3><a href="/ships/${shp.id}">${shp.id}: ${shp.classification}</a></h3><p>Latitude: ${shp.latitude}</p><p>Longitude: ${shp.longitude}</p></div>`,
       });
 
       marker.addListener("click", () => {

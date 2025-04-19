@@ -122,7 +122,7 @@ const Ships = () => {
                     <img src={`data:image/png;base64,${ship.img}`} alt={ship.name} />
                     <p className="text-gray-500">ID: {ship.id}</p>
                     <p className="text-gray-500">
-                      <strong>Location:</strong> Lat: {ship.lat}, Lng: {ship.lng}
+                      <strong>Location:</strong> Lat: {ship.latitude}, Lng: {ship.longitude}
                     </p>
                   </div>
                 </div>

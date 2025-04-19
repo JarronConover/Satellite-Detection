@@ -97,6 +97,7 @@ function App() {
             <Route path="/ships" element={<Ships />} />
             <Route path="/ships/:id" element={<Ship />} />
             <Route path="/map" element={<MapPage />} />
+            <Route path="/map/:center" element={<MapPage />} />
             <Route path="/account" element={<Account />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

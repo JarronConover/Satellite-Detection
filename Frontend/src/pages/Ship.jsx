@@ -89,7 +89,7 @@ const Ship = () => {
               
                             {/* Button */}
                             <div className="flex justify-center items-center">
-                              <Link to="/map">
+                              <Link to={`/map/${ship.latitude}_${ship.longitude}`}>
                                 <button className="bg-blue-500 text-white py-2 px-6 rounded-full shadow hover:bg-blue-400 transition-all">
                                   Show on Map
                                 </button>

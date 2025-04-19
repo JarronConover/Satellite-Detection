@@ -57,8 +57,8 @@ const List = ({ ships, filters }) => {
                             <strong> Classification:</strong> {ship.classification}
                             </div>
                             <div className="right_text">
-                            <strong> Lat:</strong> {ship.lat} | 
-                            <strong> Lng:</strong> {ship.lng}
+                            <strong> Lat:</strong> {ship.latitude} | 
+                            <strong> Lng:</strong> {ship.longitude}
                             </div>
                         </div>
                     );
