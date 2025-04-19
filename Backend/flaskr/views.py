@@ -1,34 +1,41 @@
 from flask import Blueprint, jsonify, g, request, abort
 from flaskr.db import get_db
+import random
+
+CLASSIFICATIONS = ["Cargo", "Fishing", "Merchant", "Passenger", "Warship", "Unknown"]
 
 bp = Blueprint('main', __name__)
 
 @bp.route('/api/ships')
 def get_ships():
-    # DB-sourced ships
     db = get_db()
+
+    # Load existing ship IDs from DB
+    existing_ids = set(
+        row['id'] for row in db.execute('SELECT id FROM ship').fetchall()
+    )
+
+    # Loop through AIS ships in memory and insert if not already in DB
+    for sid in g.ais.get_all():
+        if sid not in existing_ids:
+            lat, lon, ts = g.ais._data[sid]
+            classification = random.choice(CLASSIFICATIONS)
+
+            try:
+                db.execute(
+                    "INSERT INTO ship "
+                    "(id, classification, latitude, longitude, img, width, height, confidence, time, danger) "
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+                    (sid, classification, lat, lon, None, -1, -1, 100, ts, 0)
+                )
+                db.commit()
+                existing_ids.add(sid)
+            except Exception as e:
+                print(f"Error persisting AIS ship {sid}: {e}")
+
+    # Return all ships (sat + AIS) from DB
     db_ships = [dict(r) for r in db.execute('SELECT * FROM ship').fetchall()]
-
-    # AIS-sourced ships
-    ais_ids = g.ais.get_all()
-    ais_ships = [
-        {
-            'id': -1,
-            'classification': 'AIS ship',
-            'latitude': lat,
-            'longitude': lon,
-            'img': None,
-            'width': -1,
-            'height': -1,
-            'confidence': 100,
-            'time': ts,
-            'danger': 0
-        }
-        for sid in ais_ids
-        for lat, lon, ts in [g.ais._data[sid]]
-    ]
-
-    return jsonify(db_ships + ais_ships), 200
+    return jsonify(db_ships), 200
 
 @bp.route('/api/ships/<int:id>')
 def get_ship_by_id(id):

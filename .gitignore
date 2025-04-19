@@ -3,6 +3,7 @@ api.js
 .env
 
 .venv/
+venv/
 
 *.pyc
 __pycache__/
