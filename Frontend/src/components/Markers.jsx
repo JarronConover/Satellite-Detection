@@ -4,33 +4,32 @@ import MarkerClusterer from "@google/markerclustererplus";
 
 const Markers = ({ map, ships, filters }) => {
   useEffect(() => {
-    if (!map) return;
+    if (!map || !Array.isArray(ships)) return;
 
-    const markers = []; // To hold all markers
+    const markers = [];
     let visibleMarkers = [];
 
-    // Add markers based on filtered ships
-    for (const ship in ships) {
-      const shp = ships[ship];
-      if (!filters.includes(shp.classification)) continue; // Skip markers outside filters
+    for (const shp of ships) {
+      const classification = shp.classification?.toLowerCase();
+      if (!filters.includes(classification)) continue;
 
       const marker = new google.maps.Marker({
         position: { lat: shp.latitude, lng: shp.longitude },
-        icon: { url: `/img/${shp.classification.toLowerCase()}.png` },
+        icon: { url: `/img/${classification}.png` },
       });
 
-      marker.classification = shp.classification;
+      marker.classification = classification;
 
       const infoWindow = new google.maps.InfoWindow({
         content: `
           <div class="px-4 rounded-md bg-white shadow-md text-gray-800 max-w-xs">
             <h3 class="text-lg font-bold mb-4">
-            <button
-              onclick="window.location.href='/ships/${shp.id}'"
-              class="bg-purple-300 hover:bg-purple-200 text-black font-medium py-2 px-4 rounded shadow-md transition duration-150 active:scale-95"
-            >
-              Ship #${shp.id}: ${shp.classification.charAt(0).toUpperCase() + shp.classification.slice(1)}
-            </button>
+              <button
+                onclick="window.location.href='/ships/${shp.id}'"
+                class="bg-purple-300 hover:bg-purple-200 text-black font-medium py-2 px-4 rounded shadow-md transition duration-150 active:scale-95"
+              >
+                Ship #${shp.id}: ${shp.classification.charAt(0).toUpperCase() + shp.classification.slice(1)}
+              </button>
             </h3>
             <div class="text-sm text-gray-600 space-y-1 pb-8">
               <p><strong>Latitude:</strong> ${shp.latitude}</p>
@@ -39,7 +38,6 @@ const Markers = ({ map, ships, filters }) => {
           </div>
         `,
       });
-      
 
       marker.addListener("click", () => {
         if (visibleMarkers.includes(marker)) {
@@ -54,17 +52,15 @@ const Markers = ({ map, ships, filters }) => {
       markers.push(marker);
     }
 
-    // Create a marker clusterer with the filtered markers
     const markerCluster = new MarkerClusterer(map, markers, {
       imagePath: "/img/m",
     });
 
-    // Cleanup markers and clusterer when component unmounts or dependencies change
     return () => {
-      markers.forEach((marker) => marker.setMap(null)); // Remove markers from map
-      markerCluster.clearMarkers(); // Clear the clusterer
+      markers.forEach((marker) => marker.setMap(null));
+      markerCluster.clearMarkers();
     };
-  }, [map, ships, filters]); // Re-run effect when map, ships, or filters change
+  }, [map, ships, filters]);
 
   return null;
 };
