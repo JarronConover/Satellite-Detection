@@ -1,12 +1,9 @@
-import React, { useState } from "react";
-import Modal from "react-modal";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
 
-// Make sure to bind the modal's root element to your app
-Modal.setAppElement("#root");
-
-function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
-  const [isLocked, setIsLocked] = useState(false); // State for the "Lock Modal Open" checkbox
-  const classifications = ["Cargo", "Fishing", "Warship", "Unauthorized"];
+const FilterModal = ({ filters, setFilters }) => {
+  const classifications = ["fishing", "merchant", "warship", "other", "ais ship"];
 
   const handleCheckboxChange = (classification) => {
     setFilters((prev) =>
@@ -16,84 +13,33 @@ function FilterModal({ isOpen, onClose, filters, setFilters, triggerRef }) {
     );
   };
 
-  // Calculate dynamic modal position based on the trigger element's location
-  const getModalPosition = () => {
-    if (triggerRef.current) {
-      const rect = triggerRef.current.getBoundingClientRect();
-      let top = rect.bottom + window.scrollY; // Position below the trigger element
-      return { top };
-    }
-    return { top: "50%" }; // Default fallback
-  };
-
-  const modalPosition = getModalPosition();
-
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={isLocked ? null : onClose} // Prevent closing when locked
-      contentLabel="Filter Modal"
-      style={{
-        content: {
-          position: "absolute",
-          top: `${modalPosition.top + 20}px`,
-          right: `10px`,
-          transform: "none", // Avoid default centering
-          width: "300px", // Set a fixed width for consistency
-          zIndex: 10, // Ensure modal stays above the map
-          pointerEvents: "auto", // Ensure modal is interactive
-        },
-        overlay: {
-          backgroundColor: isLocked ? "transparent" : "rgba(0, 0, 0, 0.5)", // Remove overlay when locked
-          pointerEvents: isLocked ? "none" : "auto", // Allow clicks through the overlay when locked
-        },
-      }}
-      className="modal-content"
-      overlayClassName="modal-overlay"
-    >
-      <div>
-        <button
-          onClick={onClose}
-          className="close-button"
-          style={{
-            position: "absolute",
-            top: "10px", // Adjust top positioning
-            right: "10px", // Adjust right positioning
-            fontSize: "18px",
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-          }}
-        >
-          &times;
-        </button>
-        <h3>Filter by Boat Classification</h3>
-        {classifications.map((classification) => (
-          <div key={classification} style={{ marginBottom: "10px" }}>
-            <label>
-              <input
-                type="checkbox"
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="bg-white border-2 border-gray-400 text-gray-700 hover:bg-gray-200 shadow-md">
+          Filter Ships
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="max-w-md bg-white p-6 rounded-lg shadow-lg">
+        <DialogHeader>
+          <DialogTitle>Filter Ships</DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          {classifications.map((classification) => (
+            <div key={classification} className="flex items-center space-x-2">
+              <Checkbox
                 checked={filters.includes(classification)}
-                onChange={() => handleCheckboxChange(classification)}
+                onCheckedChange={() => handleCheckboxChange(classification)} // Fix: Use `onCheckedChange`
               />
-              {classification}
-            </label>
-          </div>
-        ))}
-
-        <div style={{ marginTop: "20px" }}>
-          <label>
-            <input
-              type="checkbox"
-              checked={isLocked}
-              onChange={() => setIsLocked((prev) => !prev)} // Toggle lock state
-            />
-            Lock Filters Open
-          </label>
+              <label className="text-gray-700">
+                {classification.charAt(0).toUpperCase() + classification.slice(1)}
+              </label>
+            </div>
+          ))}
         </div>
-      </div>
-    </Modal>
+      </DialogContent>
+    </Dialog>
   );
-}
+};
 
 export default FilterModal;

@@ -1,8 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import Header from "../components/Header";
 import FilterModal from "../components/FilterModal";
-import MenuModal from "../components/MenuModal";
-import List from "../components/List";
 import { useParams } from "react-router-dom";
 import { Button } from "@/components/ui/button"; 
 import { Link } from "react-router-dom";
@@ -13,11 +10,8 @@ const Ships = () => {
 
   const title = "Ships List";
   const [ships, setShips] = useState({});
-  const [filters, setFilters] = useState(["Cargo", "Fishing", "Warship", "Unauthorized"]);
+  const [filters, setFilters] = useState(["fishing", "merchant", "warship", "other", "ais ship"]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
-  const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
-  const filtersRef = useRef(null);
-  const menuRef = useRef(null);
 
   useEffect(() => {
     const fetchShips = async () => {
@@ -38,25 +32,34 @@ const Ships = () => {
     document.title = title;
   }, []);
 
-  const filteredShips = bounds
-    ? Object.keys(ships)
-        .filter((shipKey) => {
-          const ship = ships[shipKey];
-          const latMin = Math.min(bounds[0], bounds[1]);
-          const latMax = Math.max(bounds[0], bounds[1]);
-          const lngMin = Math.min(bounds[2], bounds[3]);
-          const lngMax = Math.max(bounds[2], bounds[3]);
+  const filteredShips = Object.keys(ships)
+  .filter((shipKey) => {
+    const ship = ships[shipKey];
 
-          return (
-            ship.lat >= latMin && ship.lat <= latMax &&
-            ship.lng >= lngMin && ship.lng <= lngMax
-          );
-        })
-        .reduce((acc, key) => {
-          acc[key] = ships[key];
-          return acc;
-        }, {})
-    : ships;
+    // Check if ship classification is in selected filters
+    if (!filters.includes(ship.classification)) return false;
+
+    // Bounds filtering (if applicable)
+    if (bounds) {
+      const latMin = Math.min(bounds[0], bounds[1]);
+      const latMax = Math.max(bounds[0], bounds[1]);
+      const lngMin = Math.min(bounds[2], bounds[3]);
+      const lngMax = Math.max(bounds[2], bounds[3]);
+
+      return (
+        ship.lat >= latMin &&
+        ship.lat <= latMax &&
+        ship.lng >= lngMin &&
+        ship.lng <= lngMax
+      );
+    }
+
+    return true;
+  })
+  .reduce((acc, key) => {
+    acc[key] = ships[key];
+    return acc;
+  }, {});
 
     const sortedShips = Object.values(filteredShips).sort((a, b) => {
       if (a.classification === "Unauthorized" && b.classification !== "Unauthorized") return -1;
@@ -66,37 +69,16 @@ const Ships = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      {/* <Header
-        menuRef={menuRef}
-        filtersRef={filtersRef}
-        onMenuClick={() => setIsMenuModalOpen(true)}
-        onFiltersClick={() => setIsFilterModalOpen(true)}
-        title={title}
-        isFilters={true}
-      />
-      <FilterModal
-        isOpen={isFilterModalOpen}
-        onClose={() => setIsFilterModalOpen(false)}
-        filters={filters}
-        setFilters={setFilters}
-        triggerRef={filtersRef}
-      />
-      <MenuModal
-        isOpen={isMenuModalOpen}
-        onClose={() => setIsMenuModalOpen(false)}
-        triggerRef={menuRef}
-      /> */}
+
 
       <div className="container mx-auto px-4 space-x-4">
-        {/* Filters */}
         <div className="py-4">
-          <Button
-            variant="outline"
-            onClick={() => setIsFilterModalOpen(true)}
-            className="bg-white border-2 border-gray-400 text-gray-700 hover:bg-gray-200 shadow-md"
-          >
-            Filter Ships
-          </Button>
+          <FilterModal
+            isOpen={isFilterModalOpen}
+            onClose={() => setIsFilterModalOpen(false)}
+            filters={filters}
+            setFilters={setFilters}
+          />
         </div>
 
         {/* Ships List */}
