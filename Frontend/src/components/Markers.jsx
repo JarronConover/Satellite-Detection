@@ -23,18 +23,23 @@ const Markers = ({ map, ships, filters }) => {
 
       const infoWindow = new google.maps.InfoWindow({
         content: `
-          <div class="text-center p-2">
-            <h3 class="text-lg font-semibold text-gray-800 mb-1">
-              <a href="/ships/${shp.id}" class="text-blue-500 hover:underline">
-                ${shp.id}: ${shp.classification.charAt(0).toUpperCase() + shp.classification.slice(1)}
-              </a>
+          <div class="px-4 rounded-md bg-white shadow-md text-gray-800 max-w-xs">
+            <h3 class="text-lg font-bold mb-4">
+            <button
+              onclick="window.location.href='/ships/${shp.id}'"
+              class="bg-purple-300 hover:bg-purple-200 text-black font-medium py-2 px-4 rounded shadow-md transition duration-150 active:scale-95"
+            >
+              Ship #${shp.id}: ${shp.classification.charAt(0).toUpperCase() + shp.classification.slice(1)}
+            </button>
             </h3>
-            <p class="text-sm text-gray-600">
-              <strong>Lat:</strong> ${shp.latitude} | <strong>Lng:</strong> ${shp.longitude}
-            </p>
+            <div class="text-sm text-gray-600 space-y-1 pb-8">
+              <p><strong>Latitude:</strong> ${shp.latitude}</p>
+              <p><strong>Longitude:</strong> ${shp.longitude}</p>
+            </div>
           </div>
         `,
       });
+      
 
       marker.addListener("click", () => {
         if (visibleMarkers.includes(marker)) {
