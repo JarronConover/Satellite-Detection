@@ -8,8 +8,6 @@ const Ship = () => {
     const title = `Ship: ${id}`;
     const [ships, setShips] = useState({});
     const [ship, setShip] = useState(null);
-    const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
-    const menuRef = useRef(null);
 
     useEffect(() => {
         const fetchShips = async () => {
@@ -41,18 +39,6 @@ const Ship = () => {
 
             return (
                 <div className="min-h-screen bg-gray-100">
-                    
-                    {/* <Header
-                        menuRef={menuRef}
-                        onMenuClick={() => setIsMenuModalOpen(true)}
-                        title={title}
-                        isFilters={false}
-                    />
-                    <MenuModal
-                        isOpen={isMenuModalOpen}
-                        onClose={() => setIsMenuModalOpen(false)}
-                        triggerRef={menuRef}
-                    /> */}
 
                   <div className="container mx-auto px-4 py-8">
                     <div className="bg-white shadow-lg rounded-lg p-6">

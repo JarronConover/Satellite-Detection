@@ -12,9 +12,7 @@ const Markers = ({ map, ships, filters }) => {
     // Add markers based on filtered ships
     for (const ship in ships) {
       const shp = ships[ship];
-      console.log(shp);
-      console.log(shp.classification)
-      // if (!filters.includes(shp.classification)) continue; // Skip markers outside filters
+      if (!filters.includes(shp.classification)) continue; // Skip markers outside filters
 
       const marker = new google.maps.Marker({
         position: { lat: shp.latitude, lng: shp.longitude },
