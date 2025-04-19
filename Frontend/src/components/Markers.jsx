@@ -22,7 +22,18 @@ const Markers = ({ map, ships, filters }) => {
       marker.classification = shp.classification;
 
       const infoWindow = new google.maps.InfoWindow({
-        content: `<div><h3><a href="/ships/${shp.id}">${shp.id}: ${shp.classification.charAt(0).toUpperCase() + shp.classification.slice(1)}</a></h3><p>Latitude: ${shp.latitude}</p><p>Longitude: ${shp.longitude}</p></div>`,
+        content: `
+          <div class="text-center p-2">
+            <h3 class="text-lg font-semibold text-gray-800 mb-1">
+              <a href="/ships/${shp.id}" class="text-blue-500 hover:underline">
+                ${shp.id}: ${shp.classification.charAt(0).toUpperCase() + shp.classification.slice(1)}
+              </a>
+            </h3>
+            <p class="text-sm text-gray-600">
+              <strong>Lat:</strong> ${shp.latitude} | <strong>Lng:</strong> ${shp.longitude}
+            </p>
+          </div>
+        `,
       });
 
       marker.addListener("click", () => {
