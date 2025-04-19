@@ -47,6 +47,38 @@ function Map({ onMapLoad, center }) {
         ],
       });
 
+      // Initialize the Drawing Manager for rectangles only
+      const drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.RECTANGLE, // Default mode
+        drawingControl: true, // Show drawing controls
+        drawingMode: null,
+        drawingControlOptions: {
+          position: google.maps.ControlPosition.LEFT_BOTTOM, // Position of drawing controls
+          drawingModes: ["rectangle"], // Restrict to rectangles only
+        },
+        rectangleOptions: {
+          fillColor: "#FF0000",
+          fillOpacity: 0.2,
+          strokeWeight: 2,
+          clickable: true,
+          editable: true,
+          draggable: true,
+        },
+      });
+
+      drawingManager.setMap(map); // Attach the Drawing Manager to the map
+
+      // Add an event listener to capture rectangle bounds
+      google.maps.event.addListener(drawingManager, "overlaycomplete", (event) => {
+        if (event.type === google.maps.drawing.OverlayType.RECTANGLE) {
+          const bounds = event.overlay.getBounds();
+          const northeast = bounds.getNorthEast(); // Top-right corner
+          const southwest = bounds.getSouthWest(); // Bottom-left corner
+
+          navigate(`/ships/filter/${northeast.lat()}_${southwest.lat()}_${northeast.lng()}_${southwest.lng()}`);
+        }
+      });
+
       onMapLoad(map); // Pass the map instance to the parent
     });
   }, [onMapLoad]);

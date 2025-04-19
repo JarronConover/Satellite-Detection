@@ -47,10 +47,10 @@ const Ships = () => {
       const lngMax = Math.max(bounds[2], bounds[3]);
 
       return (
-        ship.lat >= latMin &&
-        ship.lat <= latMax &&
-        ship.lng >= lngMin &&
-        ship.lng <= lngMax
+        ship.latitude >= latMin &&
+        ship.latitude <= latMax &&
+        ship.longitude >= lngMin &&
+        ship.longitude <= lngMax
       );
     }
 
