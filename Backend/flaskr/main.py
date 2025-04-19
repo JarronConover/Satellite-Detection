@@ -1,77 +1,41 @@
-from flask import Flask, jsonify, Blueprint, g, request, Response
-from flaskr.db import get_db
-import threading
-import json
-import websockets
-import time
-from datetime import datetime, timezone
-from .aisstream import connect_ais_stream, ais_ships
-from multiprocessing import process
+import os
+from flask import Flask, jsonify, g
+from flaskr.db import get_db, init_db
+from .aisstream import AISClient, AISDataStore
 
 
+def create_app(config_filename=None):
+    app = Flask(__name__, instance_relative_config=True)
+    # Load default config
+    app.config.from_mapping(
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        AISSTREAM_API_KEY=None,
+    )
+    # Override with file or env
+    if config_filename:
+        app.config.from_pyfile(config_filename, silent=True)
 
-bp = Blueprint('main', __name__)
+    init_db(app)
 
+    # Setup AIS client
+    store = AISDataStore()
+    bounding = [[[37.8038, -122.4050], [37.5860, -122.1245]]]
+    client = AISClient(store, bounding, api_key=app.config.get('AISSTREAM_API_KEY'))
+    client.start()
 
-#starts up the thread that keeps track of AIS ships
-AISShips = ais_ships()
-p = threading.Thread(target=connect_ais_stream, args=[AISShips])
-p.start()
+    # Make store available in request context
+    @app.before_request
+    def attach_ais():
+        g.ais = store
 
+    # Register blueprints
+    from flaskr.views import bp as main_bp
+    app.register_blueprint(main_bp)
 
-@bp.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
-def get_ships():
-    db = get_db()
-    ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
+    return app
 
-    print(ships)
-    
-    ids = AISShips.get_all()
-    for id in ids:
-        temp =  AISShips.id_get(id)
-        ships.append({"id": -1, "classification": "AIS ship", "latitude": temp[0], "longitude": temp[1], "img":"none", "width":-1, "height":-1, "confidence":100, "time": temp[2], "danger": 0})
+# For local debugging
+if __name__ == '__main__':
+    app = create_app()
+    app.run(host='0.0.0.0', port=5000)
 
-
-    return jsonify(ships), 200
-
-@bp.route('/api/ships/<int:id>')
-def get_ships_id(id):
-    db = get_db()
-    ships = [dict(ship) for ship in db.execute('SELECT * FROM ship WHERE id = ?', (id)).fetchall()]
-
-    if (ships is None):
-        abort(404, f"ship {id} does not exist")
-
-    return jsonify(ships), 200
-
-
-@bp.route('/satdump', methods=['POST'])
-def sat_dump():
-    db = get_db()
-    payload = request.get_json()  # this is your dict or list
-    
-    # If you're sending a list of boxes:
-    for entry in payload:
-        classification = entry["Classification"]
-        timestamp      = entry["timestamp"]
-        latitude       = entry["latitude"]
-        longitude      = entry["longitude"]
-        width          = entry["width"]
-        height         = entry["height"]
-        image      = entry["image"]
-        confidence     = entry["confidence"]
-
-        danger = 0
-        matching = AISShips.get(entry["latitude"], entry["longitude"])
-        if len(matching) == 0:
-            danger = 1
-
-        try:
-            db.execute(
-                "INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (?,?,?,?,?,?,?,?,?)",
-                (classification,  latitude, longitude, image, width, height, confidence, timestamp, danger))
-            db.commit()
-        except:
-            pass
-
-    return Response(status=200)

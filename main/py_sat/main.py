@@ -87,11 +87,14 @@ def get_bounding_boxes(image_path, device):
                         "confidence": confidence
                     })
 
+                    print(f"Detected {label} with confidence {confidence:.2f} at ({x_min}, {y_min}) to ({x_max}, {y_max})")
+
     return bounding_boxes
 
 
 def sendData(data):
     url = 'http://127.0.0.1:5000/satdump'
+    print(f'sending {len(data)} ships to backend')
     resp = requests.post(url, json=data)
 
     if resp is None:
