@@ -93,7 +93,7 @@ def get_bounding_boxes(image_path, device):
 
 
 def sendData(data):
-    url = 'http://127.0.0.1:5000/satdump'
+    url = ' http://localhost:8000/satdump'
     print(f'sending {len(data)} ships to backend')
     resp = requests.post(url, json=data)
 

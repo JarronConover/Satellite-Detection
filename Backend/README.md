@@ -1,13 +1,11 @@
-how to set up
 
-1. run ```poetry install```
+```bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+flask --app flaskr init-db
 
-2. add ais api key to .env
-
-3. run ```poetry env activate``` and copy and run its output
-
-4. run ```flask --app flaskr init-db``` to set up database
-
-5. run ```flask --app flaskr run```
-
-and thats all
+export FLASK_APP="flaskr:create_app"
+export FLASK_ENV=development
+flask run --host=0.0.0.0 --port=8000
+```

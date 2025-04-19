@@ -1,25 +1,31 @@
-version: "3.8"
-services:
+version: "3.9"
 
+services:
+  # ──────────────── Flask + Gunicorn ────────────────
   backend:
     build:
       context: ./Backend
     env_file:
-      - ./Backend/.env           # your AI key + any other secrets
-    volumes:
-      - ./Backend:/app           # live code in dev
-      - ./Backend/instance:/app/instance
-    ports:
-      - "5000:5000"
-    command: flask run --host=0.0.0.0
+      - ./Backend/.env          # AISSTREAM_API_KEY, etc.
+    
+    command: >
+      gunicorn flaskr:app -b 0.0.0.0:5000 -w 3
 
+    volumes:
+      - db-data:/app/instance   # keep SQLite db between restarts
+    ports:
+      - "8000:5000"            # host:container
+    expose:
+      - "5000"                 # container:container
+
+  # ──────────────── Vite‑built SPA served by Nginx ────────────────
   frontend:
     build:
       context: ./Frontend
-    volumes:
-      - ./Frontend:/app          # live code in dev
     ports:
-      - "80:80"
+      - "8080:80"               # host:container
     depends_on:
       - backend
 
+volumes:
+  db-data:

@@ -21,6 +21,7 @@ const MapPage = () => {
     const menuRef = useRef(null);
 
     useEffect(() => {
+<<<<<<< HEAD
         const fetchShips = async () => {
           try {
             const response = await fetch("/api/ships");
@@ -34,6 +35,21 @@ const MapPage = () => {
     
         fetchShips();
       }, []);
+=======
+    const fetchShips = async () => {
+        try {
+        const response = await fetch("api/ships");
+        if (!response.ok) throw new Error("Failed to fetch ships data");
+        const data = await response.json();
+        setShips(data);
+        } catch (error) {
+        console.error("Error fetching ships:", error);
+        }
+    };
+
+    fetchShips();
+    }, []);
+>>>>>>> 70a38f47271eb0b5681f30f020bd55c097e6b96c
 
     useEffect(() => {
         if (map) {
