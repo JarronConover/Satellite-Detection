@@ -11,18 +11,18 @@ const Ship = () => {
 
     useEffect(() => {
         const fetchShips = async () => {
-            try {
-                const response = await fetch("api/ships/");
-                if (!response.ok) throw new Error("Failed to fetch ships data");
-                const data = await response.json();
-                setShips(data);
-            } catch (error) {
-                console.error("Error fetching ships:", error);
-            }
+          try {
+            const response = await fetch("/api/ships");
+            if (!response.ok) throw new Error("Failed to fetch ships data");
+            const data = await response.json();
+            setShips(data);
+          } catch (error) {
+            console.error("Error fetching ships:", error);
+          }
         };
-
+    
         fetchShips();
-    }, []);
+      }, []);
 
     useEffect(() => {
         if (Object.keys(ships).length > 0) {
