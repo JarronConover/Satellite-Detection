@@ -12,11 +12,13 @@ const Markers = ({ map, ships, filters }) => {
     // Add markers based on filtered ships
     for (const ship in ships) {
       const shp = ships[ship];
+      console.log(shp);
+      console.log(shp.classification)
       // if (!filters.includes(shp.classification)) continue; // Skip markers outside filters
 
       const marker = new google.maps.Marker({
         position: { lat: shp.latitude, lng: shp.longitude },
-        icon: { url: `./img/${shp.classification.toLowerCase()}.png` },
+        icon: { url: `/img/${shp.classification.toLowerCase()}.png` },
       });
 
       marker.classification = shp.classification;
@@ -40,7 +42,7 @@ const Markers = ({ map, ships, filters }) => {
 
     // Create a marker clusterer with the filtered markers
     const markerCluster = new MarkerClusterer(map, markers, {
-      imagePath: "./img/m",
+      imagePath: "/img/m",
     });
 
     // Cleanup markers and clusterer when component unmounts or dependencies change
