@@ -14,7 +14,7 @@ const Ship = () => {
     useEffect(() => {
         const fetchShips = async () => {
             try {
-                const response = await fetch("http://localhost:5000/api/ships");
+                const response = await fetch("api/ships/");
                 if (!response.ok) throw new Error("Failed to fetch ships data");
                 const data = await response.json();
                 setShips(data);

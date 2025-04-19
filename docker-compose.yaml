@@ -1,0 +1,25 @@
+version: "3.8"
+services:
+
+  backend:
+    build:
+      context: ./Backend
+    env_file:
+      - ./Backend/.env           # your AI key + any other secrets
+    volumes:
+      - ./Backend:/app           # live code in dev
+      - ./Backend/instance:/app/instance
+    ports:
+      - "5000:5000"
+    command: flask run --host=0.0.0.0
+
+  frontend:
+    build:
+      context: ./Frontend
+    volumes:
+      - ./Frontend:/app          # live code in dev
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
