@@ -106,19 +106,21 @@ const Ships = () => {
               <Link key={ship.id} to={`/ships/${ship.id}`} className="transform transition-transform hover:scale-105">
                 <div
                   className={`cursor-pointer rounded-lg p-4 flex flex-col items-center justify-between space-y-4 transition-all duration-200 shadow-md hover:shadow-xl hover:bg-opacity-90 ${
-                    ship.classification === "Unauthorized"
+                    ship.classification === "ais ship"
                       ? "border-4 border-red-500 bg-red-100"
-                      : ship.classification === "Fishing"
+                      : ship.classification === "fishing"
                       ? "border-4 border-blue-500 bg-blue-100"
-                      : ship.classification === "Warship"
+                      : ship.classification === "warship"
                       ? "border-4 border-green-500 bg-green-100"
-                      : ship.classification === "Cargo"
+                      : ship.classification === "merchant"
                       ? "border-4 border-purple-500 bg-purple-100"
+                      : ship.classification === "other"
+                      ? "border-4 border-yellow-500 bg-yellow-100"
                       : "border border-gray-200 bg-white"
                   }`}
                 >
                   <div className="text-center space-y-2">
-                    <h3 className="text-xl font-semibold text-gray-800">{ship.classification}</h3>
+                    <h3 className="text-xl font-semibold text-gray-800">{ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)}</h3>
                     <img src={`data:image/png;base64,${ship.img}`} alt={ship.name} />
                     <p className="text-gray-500">ID: {ship.id}</p>
                     <p className="text-gray-500">

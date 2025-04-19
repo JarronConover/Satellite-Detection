@@ -37,6 +37,8 @@ const Ship = () => {
         document.title = title;
     }, [title]);
 
+
+
             return (
                 <div className="min-h-screen bg-gray-100">
                     
@@ -64,7 +66,7 @@ const Ship = () => {
                             <div className="flex justify-center mb-6">
                               <img
                                 src={ship.image}
-                                alt={`${ship.classification} ship`}
+                                alt={`${ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)} ship`}
                                 className="w-64 h-64 object-contain rounded-lg shadow-md"
                               />
                             </div>
@@ -77,13 +79,13 @@ const Ship = () => {
                                 <strong className="font-semibold">ID:</strong> {ship.id}
                               </p>
                               <p>
-                                <strong className="font-semibold">Classification:</strong> {ship.classification}
+                                <strong className="font-semibold">Classification:</strong> {ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)}
                               </p>
                               <p>
-                                <strong className="font-semibold">Latitude:</strong> {ship.lat}
+                                <strong className="font-semibold">Latitude:</strong> {ship.latitude}
                               </p>
                               <p>
-                                <strong className="font-semibold">Longitude:</strong> {ship.lng}
+                                <strong className="font-semibold">Longitude:</strong> {ship.longitude}
                               </p>
                             </div>
               
