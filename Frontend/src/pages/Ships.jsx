@@ -101,9 +101,13 @@ const Ships = () => {
                       : "border border-gray-200 bg-white"
                   }`}
                 >
-                  <div className="text-center space-y-2">
+                  <div className="text-center space-y-2 flex flex-col">
                     <h3 className="text-xl font-semibold text-gray-800">{ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)}</h3>
-                    <img src={`data:image/png;base64,${ship.img}`} alt={ship.name} />
+                    <img
+                      src={`data:image/png;base64,${ship.img}`}
+                      alt={ship.name}
+                      className="w-4 h-auto mx-auto"
+                    />
                     <p className="text-gray-500">ID: {ship.id}</p>
                     <p className="text-gray-500">
                       <strong>Location:</strong> Lat: {ship.latitude}, Lng: {ship.longitude}
