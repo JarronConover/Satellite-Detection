@@ -1,64 +1,41 @@
-from flask import Flask, jsonify, Blueprint, g, request, Response
-from flaskr.db import get_db
-import asyncio
-import json
-import websockets
-import time
-from datetime import datetime, timezone
-
- # Enable CORS to allow cross-origin requests from React frontend
-
-bp = Blueprint('main', __name__)
-#Sample Ship data that will get removed once we have a database to draw on
-
-@bp.route('/api/ships', methods=['get'])        #This is where the frontend requests ship data
-def get_ships():
-    db = get_db()
-    ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
-
-    return jsonify(ships), 200
-
-@bp.route('/api/ships/<int:id>')
-def get_ships_id(id):
-    db = get_db()
-    ships = [dict(ship) for ship in db.execute('SELECT * FROM ship').fetchall()]
-
-    if (ships is None):
-        abort(404, f"ship {id} does not exist")
-
-    return jsonify(ships), 200
+import os
+from flask import Flask, jsonify, g
+from flaskr.db import get_db, init_db
+from .aisstream import AISClient, AISDataStore
 
 
-@bp.route('/satdump', methods=['POST'])
-def sat_dump():
-    db = get_db()
-    payload = request.get_json()  # this is your dict or list
-    
-    # If you're sending a list of boxes:
-    for entry in payload:
-        classification = entry["Classification"]
-        timestamp      = entry["timestamp"]
-        latitude       = entry["latitude"]
-        longitude      = entry["longitude"]
-        width          = entry["width"]
-        height         = entry["height"]
-        image      = entry["image"]
-        confidence     = entry["confidence"]
+def create_app(config_filename=None):
+    app = Flask(__name__, instance_relative_config=True)
+    # Load default config
+    app.config.from_mapping(
+        DATABASE=os.path.join(app.instance_path, 'flaskr.sqlite'),
+        AISSTREAM_API_KEY=None,
+    )
+    # Override with file or env
+    if config_filename:
+        app.config.from_pyfile(config_filename, silent=True)
 
-        danger = 1
+    init_db(app)
 
-        # todo: insert into your DB here
-        # e.g. db.execute(..., (classification, timestamp, ...))
-    
-    db.commit()
-    
+    # Setup AIS client
+    store = AISDataStore()
+    bounding = [[[37.8038, -122.4050], [37.5860, -122.1245]]]
+    client = AISClient(store, bounding, api_key=app.config.get('AISSTREAM_API_KEY'))
+    client.start()
 
-    try:
-        db.execute(
-            "INSERT INTO ship (classification, latitude, longitude, img, width, height, confidence, time, danger) VALUES (?,?,?,?,?,?,?,?,?)",
-            (classification,  latitude, longitude, image, width, height, confidence, timestamp, danger))
-        db.commit()
-    except:
-        pass
+    # Make store available in request context
+    @app.before_request
+    def attach_ais():
+        g.ais = store
 
-    return Response(status=200)
+    # Register blueprints
+    from flaskr.views import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    return app
+
+# For local debugging
+if __name__ == '__main__':
+    app = create_app()
+    app.run(host='0.0.0.0', port=5000)
+

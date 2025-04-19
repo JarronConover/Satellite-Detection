@@ -8,23 +8,21 @@ const Ship = () => {
     const title = `Ship: ${id}`;
     const [ships, setShips] = useState({});
     const [ship, setShip] = useState(null);
-    const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
-    const menuRef = useRef(null);
 
     useEffect(() => {
         const fetchShips = async () => {
-            try {
-                const response = await fetch("http://localhost:5000/api/ships");
-                if (!response.ok) throw new Error("Failed to fetch ships data");
-                const data = await response.json();
-                setShips(data);
-            } catch (error) {
-                console.error("Error fetching ships:", error);
-            }
+          try {
+            const response = await fetch("/api/ships");
+            if (!response.ok) throw new Error("Failed to fetch ships data");
+            const data = await response.json();
+            setShips(data);
+          } catch (error) {
+            console.error("Error fetching ships:", error);
+          }
         };
-
+    
         fetchShips();
-    }, []);
+      }, []);
 
     useEffect(() => {
         if (Object.keys(ships).length > 0) {
@@ -37,20 +35,10 @@ const Ship = () => {
         document.title = title;
     }, [title]);
 
+
+
             return (
                 <div className="min-h-screen bg-gray-100">
-                    
-                    {/* <Header
-                        menuRef={menuRef}
-                        onMenuClick={() => setIsMenuModalOpen(true)}
-                        title={title}
-                        isFilters={false}
-                    />
-                    <MenuModal
-                        isOpen={isMenuModalOpen}
-                        onClose={() => setIsMenuModalOpen(false)}
-                        triggerRef={menuRef}
-                    /> */}
 
                   <div className="container mx-auto px-4 py-8">
                     <div className="bg-white shadow-lg rounded-lg p-6">
@@ -64,7 +52,7 @@ const Ship = () => {
                             <div className="flex justify-center mb-6">
                               <img
                                 src={ship.image}
-                                alt={`${ship.classification} ship`}
+                                alt={`${ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)} ship`}
                                 className="w-64 h-64 object-contain rounded-lg shadow-md"
                               />
                             </div>
@@ -77,19 +65,19 @@ const Ship = () => {
                                 <strong className="font-semibold">ID:</strong> {ship.id}
                               </p>
                               <p>
-                                <strong className="font-semibold">Classification:</strong> {ship.classification}
+                                <strong className="font-semibold">Classification:</strong> {ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)}
                               </p>
                               <p>
-                                <strong className="font-semibold">Latitude:</strong> {ship.lat}
+                                <strong className="font-semibold">Latitude:</strong> {ship.latitude}
                               </p>
                               <p>
-                                <strong className="font-semibold">Longitude:</strong> {ship.lng}
+                                <strong className="font-semibold">Longitude:</strong> {ship.longitude}
                               </p>
                             </div>
               
                             {/* Button */}
                             <div className="flex justify-center items-center">
-                              <Link to="/map">
+                              <Link to={`/map/${ship.latitude}_${ship.longitude}`}>
                                 <button className="bg-blue-500 text-white py-2 px-6 rounded-full shadow hover:bg-blue-400 transition-all">
                                   Show on Map
                                 </button>
