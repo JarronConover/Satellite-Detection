@@ -1,26 +1,32 @@
-# 1. Base
+# ---------- 1. Base image ----------
 FROM python:3.11-slim
 
-# 2. Install Poetry
-ENV POETRY_VERSION=1.7.1
-RUN pip install --no-cache-dir "poetry==${POETRY_VERSION}"
+# ---------- 2. OS packages your wheels may need ----------
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+        build-essential \
+        libsqlite3-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# 3. App setup
+# ---------- 3. Working directory ----------
 WORKDIR /app
-COPY pyproject.toml poetry.lock ./
 
-# 4. Install deps (no dev, no isolated venv)
-RUN poetry config virtualenvs.create false \
- && poetry install --no-root --no-dev --no-interaction --no-ansi
+# ---------- 4. Install Python deps ----------
+# copy only requirements first so Docker can cache this layer
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# 5. Copy source
+# ---------- 5. Copy application code ----------
 COPY . .
 
-# 6. Flask env
-ENV FLASK_APP=flaskr
-ENV FLASK_ENV=production
+# ---------- 6. Runtime env vars ----------
+ENV FLASK_APP=flaskr:create_app \
+    FLASK_ENV=production \
+    PYTHONUNBUFFERED=1
 
-# 7. Expose & run
+# ---------- 7. Expose & start ----------
 EXPOSE 5000
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["gunicorn", "flaskr:app", "-b", "0.0.0.0:5000", "-w", "3"]
+
+
 

@@ -16,7 +16,7 @@ export default defineConfig({
     port: 5173,           // whatever you already use
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5000', // Flask dev server
+        target: 'http://127.0.0.1:8000', // Flask dev server
         changeOrigin: true,
         secure: false,
         /* keep the /api prefix so the final URL is
