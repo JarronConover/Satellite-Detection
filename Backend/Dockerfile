@@ -16,7 +16,6 @@ WORKDIR /app
 # this is a good practice to speed up builds
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
-RUN flask --app flaskr init-db
 
 # ---------- 5. Copy application code ----------
 COPY . .
