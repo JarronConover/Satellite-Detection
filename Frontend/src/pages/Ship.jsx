@@ -10,6 +10,16 @@ const Ship = () => {
   const [ship, setShip] = useState(null);
   const [shouldRotate, setShouldRotate] = useState(false);
 
+  const fallbackImages = {
+    fishing: "/boats/fishing.jpg",
+    merchant: "/boats/merchant.jpg",
+    warship: "/boats/warship.jpg",
+    cargo: "/boats/cargo.jpg",
+    passenger: "/boats/passenger.jpg",
+    unknown: "/boats/unknown.jpg",
+    default: "/boats/default-ship.jpg"
+  };
+
   useEffect(() => {
     const fetchShips = async () => {
       try {
@@ -50,6 +60,17 @@ const Ship = () => {
 
   return (
     <div className="min-h-screen bg-gray-100">
+      {/* Danger/Clear Status Bar */}
+      {ship && (
+        <div
+          className={`text-white text-center py-2 font-semibold ${
+            ship.danger === 1 ? "bg-red-600" : "bg-green-600"
+          }`}
+        >
+          {ship.danger === 1 ? "DANGEROUS" : "CLEAR"}
+        </div>
+      )}
+
       <div className="container mx-auto px-4 py-8">
         <div className="bg-white shadow-lg rounded-lg p-6">
           {ship ? (
@@ -60,15 +81,17 @@ const Ship = () => {
               </h2>
 
               {/* Ship Image */}
-              {ship.img && (
-                <div className="flex justify-center mb-6">
-                  <img
-                    src={`data:image/png;base64,${ship.img}`}
-                    alt={ship.name}
-                    className={`w-20 m-0 h-auto ${shouldRotate ? 'rotate-90' : ''}`}
-                  />
-                </div>
-              )}
+              <div className="flex justify-center mb-6">
+                <img
+                  src={
+                    ship.img
+                      ? `data:image/png;base64,${ship.img}`
+                      : fallbackImages[ship.classification?.toLowerCase()] || fallbackImages.default
+                  }
+                  alt={ship.classification || "Ship"}
+                  className={`h-auto mx-auto ${ship.img ? "w-4" : "w-16"} ${shouldRotate ? "rotate-90" : ""}`}
+                />
+              </div>
 
               {/* Ship Details Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -78,8 +101,7 @@ const Ship = () => {
                   </p>
                   <p>
                     <strong className="font-semibold">Classification:</strong>{" "}
-                    {ship.classification.charAt(0).toUpperCase() +
-                      ship.classification.slice(1)}
+                    {ship.classification.charAt(0).toUpperCase() + ship.classification.slice(1)}
                   </p>
                   <p>
                     <strong className="font-semibold">Latitude:</strong>{" "}

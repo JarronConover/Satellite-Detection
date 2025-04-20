@@ -12,9 +12,14 @@ const MapPage = () => {
   center = center ? center.split("_").map(Number) : null;
 
   const title = "Map";
+
+  // ✅ Default to all available classifications
+  const [filters, setFilters] = useState([
+    "cargo", "fishing", "merchant", "passenger", "warship", "unknown"
+  ]);
+
   const [map, setMap] = useState(null);
-  const [ships, setShips] = useState([]); // ✅ FIX: ships as array
-  const [filters, setFilters] = useState(["fishing", "merchant", "warship", "other", "ais ship"]);
+  const [ships, setShips] = useState([]);
   const [isFilterModalOpen, setIsFilterModalOpen] = useState(false);
   const [isMenuModalOpen, setIsMenuModalOpen] = useState(false);
   const filtersRef = useRef(null);
