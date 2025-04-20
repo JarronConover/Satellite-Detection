@@ -11,8 +11,9 @@ services:
     command: >
       gunicorn flaskr:app -b 0.0.0.0:5000 -w 3
 
+    # …
     volumes:
-      - db-data:/app/instance   # keep SQLite db between restarts
+      - ./Backend/instance:/app/instance    # <— use a host bind‑mount, not a named volume
     ports:
       - "8000:5000"            # host:container
     expose:
