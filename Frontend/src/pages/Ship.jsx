@@ -89,7 +89,7 @@ const Ship = () => {
                       : fallbackImages[ship.classification?.toLowerCase()] || fallbackImages.default
                   }
                   alt={ship.classification || "Ship"}
-                  className={`h-auto mx-auto ${ship.img ? "w-4" : "w-16"} ${shouldRotate ? "rotate-90" : ""}`}
+                  className={`h-auto mx-auto ${ship.img ? "w-22" : "w-88"} ${shouldRotate ? "rotate-90" : ""}`}
                 />
               </div>
 
