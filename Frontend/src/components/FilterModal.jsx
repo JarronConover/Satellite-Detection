@@ -3,7 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 
 const FilterModal = ({ filters, setFilters }) => {
-  const classifications = ["fishing", "merchant", "warship", "other", "ais ship"];
+  const classifications = ["cargo", "fishing", "merchant", "passenger", "warship", "unknown"];
+
 
   const handleCheckboxChange = (classification) => {
     setFilters((prev) =>
@@ -29,11 +30,9 @@ const FilterModal = ({ filters, setFilters }) => {
             <div key={classification} className="flex items-center space-x-2">
               <Checkbox
                 checked={filters.includes(classification)}
-                onCheckedChange={() => handleCheckboxChange(classification)} // Fix: Use `onCheckedChange`
+                onCheckedChange={() => handleCheckboxChange(classification)}
               />
-              <label className="text-gray-700">
-                {classification.charAt(0).toUpperCase() + classification.slice(1)}
-              </label>
+              <label className="text-gray-700 capitalize">{classification}</label>
             </div>
           ))}
         </div>

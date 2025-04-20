@@ -12,8 +12,8 @@ const apiOptions = {
 function Map({ onMapLoad, center }) {
   let zoom = 16;
   if (!center) {
-    center = [37.7166, -122.2830];
-    zoom = 9;
+    center = [37.7666, -122.330];
+    zoom = 12;
   }
   const navigate = useNavigate();
   useEffect(() => {

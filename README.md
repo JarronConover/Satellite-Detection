@@ -48,7 +48,7 @@
 # Quick Start<a id="quickstart"></a>
 
 #### 1. End‑user access  
-1. Open **https://-YOUR‑DEPLOYED‑URL.com** in any modern browser.  
+1. Open **129.123.153.8:8080** in any modern browser connected to USU wifi.
 2. Click **Sign Up**, create an account, and verify your email.  
 3. Head to the **User Guide** for tips on navigating the map and vessel list.
 
@@ -61,17 +61,13 @@ See Installation for a more in-depth Guide to get ShipSight Running
 # Clone the repo (or download the source)
 git clone https://github.com/JarronConover/Satellite-Detection
 cd Satellite-Detection
+
+cd Frontend/
 cp .env.example .env    # edit the .env file with proper API keys and passwords
+cd ../Backend/
+cp .env.example .env
 
-# Running the frontend
-cd frontend
-npm install             # install React/Vite dependencies
-npm run dev
-
-# Running the backend
-cd backend
-npm install             # install backend packages
-python App.py
+docker compose up --build -d
 ```
 
 # Installation<a id="installation"></a>
@@ -90,32 +86,23 @@ The **Quick Start** section shows the _fastest_ way to see ShipSight running.
 git clone https://github.com/your-org/shipsight.git
 cd shipsight
 ```
+### Running Locally
+### 2. Backend Setup Locally
 
-### 2. Backend Setup
+Run the following commands:
 
-1. Install Poetry if not already on your path.
-```
-curl -sSL https://install.python-poetry.org | python3 -
-```
-2. Create the virtual environment and lock dependencies.
-```
-cd backend
-poetry install --no-root        # installs deps from pyproject.toml
-```
-3. Activate environment
-```
-poetry shell
-```
-4. Configure environment variables
-```
-cp .env.example .env
-```
-5. Initialize the SQLite Database
-```
-python manage.py migrate        # or your migration script
+``` bash
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+flask --app flaskr init-db
+
+export FLASK_APP="flaskr:create_app"
+export FLASK_ENV=development
+flask run --host=0.0.0.0 --port=8000
 ```
 
-### 3. Frontend Setup
+### 3. Frontend Setup Locally
 
 1. Install Dependencies 
 ```
@@ -123,7 +110,22 @@ cd ../frontend
 npm install                         # installs React/Vite dependencies
 ```
 
-### 4. Running the Stack
+### 4. Running main (the Satellite)
+As we do not have a functioning satellite, this is how you call the AI Model that is using static images for ship detection.
+
+Run these commands:
+
+``` bash
+cd /main/py_sat/
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+python3 mainpy
+```
+
+### 5. Running the Stack
 After installing both frontend and backend dependencies, you can run each service locally in separate terminals.
 
 **Backend**
@@ -138,6 +140,14 @@ cd frontend
 npm run dev
 ```
 
+### Running with Docker
+### 2. Set up the database
+Run the following commands:
+``` bash
+docker compose up --build -d
+```
+### 3. Running main (the Satellite)
+See step 4 of prior instructions
 
 
 # Architecture<a id="architecture"></a>
@@ -182,7 +192,7 @@ ShipSight is composed of four main components: a simulated satellite data source
 # User Guide<a id="userguide"></a>
 
 ### 1. Getting Started
-- URL
+- URL: 129.123.153.8:8080 (On USU wifi and if the Server: Arceus is running the service)
 - Supported browsers: Chrome, Firefox, Edge, Safari
 - Click "Don't have an account? Sign up" and input a valid email adress and create a password and click "Sign up"
 - See the "Account Page" section for more details on how to work with your account.
@@ -262,6 +272,7 @@ ShipSight is composed of four main components: a simulated satellite data source
 - backend
 - frontend
 - AIWaterfall
+- main
 - old-frontend
 - Global Files
 
@@ -275,7 +286,11 @@ ShipSight is composed of four main components: a simulated satellite data source
 
 #### AIWaterfall
 
-- contains all files relating to the satellite/ AI Model
+- contains all files relating to training the AI Model
+
+#### main
+
+- This functions as our "Satellite" which means it runs the AI Model that detects the ships and sends out a JSON of data to the backend.
 
 #### old-frontend
 
@@ -285,6 +300,7 @@ ShipSight is composed of four main components: a simulated satellite data source
 
 - .env
     - Create a .env file with the example given with the .env.example
+    - There is a .env file for frontend and backend that should be identical.
 - .env.example
     -  ``` 
         VITE_REACT_APP_GOOGLE_MAPS_API_KEY=key
@@ -295,6 +311,8 @@ ShipSight is composed of four main components: a simulated satellite data source
     The documentation of the Project
 - Software Requirements
     - The initial requirements of the project
+- docker-compose.yaml
+  - a classic docker file to get docker running
 
 
 

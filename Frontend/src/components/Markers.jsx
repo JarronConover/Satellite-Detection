@@ -3,6 +3,10 @@ import React, { useEffect } from "react";
 import MarkerClusterer from "@google/markerclustererplus";
 
 const Markers = ({ map, ships, filters }) => {
+  const isKnownClassification = (classification) => {
+    return ["merchant", "warship", "fishing"].includes(classification);
+  };
+
   useEffect(() => {
     if (!map || !Array.isArray(ships)) return;
 
@@ -13,13 +17,43 @@ const Markers = ({ map, ships, filters }) => {
       const classification = shp.classification?.toLowerCase();
       if (!filters.includes(classification)) continue;
 
+      let iconUrl;
+
+      if (shp.danger === 1) {
+        iconUrl = "/img/danger.png";
+      } else {
+        iconUrl = isKnownClassification(classification)
+          ? `/img/${classification}.png`
+          : "/img/other.png";
+      }
+
+      const normalIcon = {
+        url: iconUrl,
+        scaledSize: new google.maps.Size(64, 64),
+      };
+
+      const hoverIcon = {
+        url: iconUrl,
+        scaledSize: new google.maps.Size(88, 88),
+      };
+
       const marker = new google.maps.Marker({
         position: { lat: shp.latitude, lng: shp.longitude },
-        icon: { url: `/img/${classification}.png` },
+        icon: normalIcon,
       });
 
       marker.classification = classification;
 
+      // Hover effects
+      marker.addListener("mouseover", () => {
+        marker.setIcon(hoverIcon);
+      });
+
+      marker.addListener("mouseout", () => {
+        marker.setIcon(normalIcon);
+      });
+
+      // Info window content
       const infoWindow = new google.maps.InfoWindow({
         content: `
           <div class="px-4 rounded-md bg-white shadow-md text-gray-800 max-w-xs">

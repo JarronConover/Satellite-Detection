@@ -36,7 +36,7 @@ def get_ships():
     # Return all ships (sat + AIS) from DB
     db_ships = [dict(r) for r in db.execute('SELECT * FROM ship').fetchall()]
     return jsonify(db_ships), 200
-
+    
 @bp.route('/api/ships/<int:id>')
 def get_ship_by_id(id):
     db = get_db()
