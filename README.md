@@ -1,5 +1,8 @@
 # ShipSight - Satellite Shipping Detection
 
+https://github.com/JarronConover/Satellite-Detection
+Host Server: Arceus
+
 ## Table of Contents
 - [Overview](#overview)
 - [Prerequisites](#prerequisites)
@@ -18,7 +21,7 @@
 **ShipSight - Sattelite Ship Detection** is a secure, end‑to‑end web platform that turns raw satellite imagery into actionable maritime intelligence in near‑real‑time.
 
 1. **Acquire** – A partner Earth‑observation satellite captures high‑resolution images of a defined ocean sector (currently the San Francisco Bay and approaches). Currently the satellite is simulated from the backend of our web tool.
-2. **Detect & Classify** – An onboard AI model performs image edge‑based object detection, flags ship images, and assigns a vessel classification (cargo, tanker, fishing, etc.).  
+2. **Detect & Classify** – An onboard AI model performs image edge‑based object detection, flags ship images, and assigns a vessel classification (cargo, merchant, fishing, etc.).  
 3. **Verify** – The backend ingests the detections, queries an authoritative registry API, and tags each vessel as **authorized** or **unauthorized** for the zone.  
 4. **Visualize** – The frontend renders vessels on an interactive map with type‑specific icons; unauthorized targets are highlighted in red. A companion “Ship” page shows richer metadata.  
 5. **Secure** – Role‑based authentication gates both the map and list views. Currently, everything is available to anyone with an account as there is no propriatary or secure data available on the page.
@@ -36,7 +39,6 @@
 |------------------|-----------------|-----------------|
 | **Operating System** | Linux (kernel ≥ 5.4), macOS 13+, or Windows 11 | Verified test environments |
 | **Node.js** | 20 LTS | Runs `npm install` for the frontend build |
-| **Poetry** | 1.8+ | Installs backend dependencies and locks them; not required at runtime |
 | **Python** | 3.11+ | Backend service runtime |
 | **SQLite** | 3.40+ | Primary datastore for the backend |
 | **Supabase CLI** | 1.0⁺ | Stores the authentication | 
@@ -47,22 +49,23 @@
 
 # Quick Start<a id="quickstart"></a>
 
-#### 1. End‑user access  
-1. Open **129.123.153.8:8080** in any modern browser connected to USU wifi.
+#### 1. User access  
+1. Open **129.123.153.8:8080** in any modern browser connected to the USU wifi network.
 2. Click **Sign Up**, create an account, and verify your email.  
 3. Head to the **User Guide** for tips on navigating the map and vessel list.
 
 ---
 
-#### 2. Local development
+#### 2. Local Deployment
 See Installation for a more in-depth Guide to get ShipSight Running
 
+Run the following commands in your terminal.
 ```bash
 # Clone the repo (or download the source)
 git clone https://github.com/JarronConover/Satellite-Detection
 cd Satellite-Detection
 
-cd Frontend/
+cd frontend/
 cp .env.example .env    # edit the .env file with proper API keys and passwords
 cd ../Backend/
 cp .env.example .env
@@ -70,24 +73,94 @@ cp .env.example .env
 docker compose up --build -d
 ```
 
+### 3. Local Development
+See Installation for a more in-depth Guide to get ShipSight Running
+
+Run the following commands in your terminal.
+```bash
+git clone https://github.com/JarronConover/Satellite-Detection.git
+cd Satellite-Detection
+
+cd frontend/
+cp .env.example .env    # edit the .env file with proper API keys and passwords
+cd ../Backend/
+cp .env.example .env
+```
+
+Get the backend running using the following commands
+``` bash
+cd Backend/
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+flask --app flaskr init-db
+
+export FLASK_APP="flaskr:create_app"
+export FLASK_ENV=development
+flask run --host=0.0.0.0 --port=8000
+```
+
+In a seperate terminal start the frontend using the following commands
+```bash
+cd ../frontend
+npm install                         # installs frontend dependencies
+npm run dev
+```
+
+Run the main file that contains our simulated satellite using the following commands
+``` bash
+cd /main/py_sat/
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+python3 mainpy
+```
+
+Go to http://localhost:5173 on your local web browser
+
+
+
+
+
 # Installation<a id="installation"></a>
 
 The **Quick Start** section shows the _fastest_ way to see ShipSight running.  
 **Installation** goes deeper—laying out exact steps and options for a clean, repeatable setup on your own machine or server.
 
 > **Tip:** If you just want to _try_ ShipSight, skip to **Quick Start**.  
-> Follow **Installation** when you care about virtual envs, dependency locking, and persistent data.
-
+> Follow **Installation** if you want a more detailed explanation.
 ---
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-org/shipsight.git
-cd shipsight
+git clone https://github.com/JarronConover/Satellite-Detection.git
+cd Satellite-Detection
 ```
+
+### 2. Install .env files
+
+```bash
+cd frontend/
+cp .env.example .env    
+cd ../Backend/
+cp .env.example .env
+```
+
+Edit the .env file with proper API keys and passwords
+
+```bash
+VITE_REACT_APP_GOOGLE_MAPS_API_KEY=key
+AISSTREAM_API_KEY=key
+SUPABASE_PASSWWORD=pass
+```
+
+#### Follow the steps that provide you with the correct mode of deployment that meets your needs
 ### Running Locally
-### 2. Backend Setup Locally
+### 3. Backend Setup Locally
 
 Run the following commands:
 
@@ -102,14 +175,55 @@ export FLASK_ENV=development
 flask run --host=0.0.0.0 --port=8000
 ```
 
-### 3. Frontend Setup Locally
+### 4. Frontend Setup Locally
 
 1. Install Dependencies 
-```
+
+```bash
 cd ../frontend
 npm install                         # installs React/Vite dependencies
 ```
 
+### 5. Running main (the Satellite)
+As we do not have a functioning satellite, this is how you call the AI Model that is using static images for ship detection.
+
+Run these commands:
+
+``` bash
+cd /main/py_sat/
+
+python3 -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+
+python3 mainpy
+```
+
+### 6. Running the Stack
+After installing both frontend and backend dependencies, you can run each service locally in separate terminals.
+
+**Backend**
+```bash
+cd backend
+flask run --host=0.0.0.0 --port=8000
+```
+
+**Frontend**
+```bash
+cd frontend
+npm run dev
+```
+
+### 7. View the Web App
+Go to http://localhost:5173/ on your local web browser.
+
+
+### Running with Docker
+### 3. Set up the database
+Run the following commands:
+``` bash
+docker compose up --build -d
+```
 ### 4. Running main (the Satellite)
 As we do not have a functioning satellite, this is how you call the AI Model that is using static images for ship detection.
 
@@ -125,29 +239,11 @@ pip install -r requirements.txt
 python3 mainpy
 ```
 
-### 5. Running the Stack
-After installing both frontend and backend dependencies, you can run each service locally in separate terminals.
+### View the Web App
+Go to http://localhost:8080/ on your local web browser.
 
-**Backend**
-```bash
-cd backend
-python App.py
-```
-
-**Frontend**
-```bash
-cd frontend
-npm run dev
-```
-
-### Running with Docker
-### 2. Set up the database
-Run the following commands:
-``` bash
-docker compose up --build -d
-```
-### 3. Running main (the Satellite)
-See step 4 of prior instructions
+### Server Deployment
+Run the Docker installation steps on the designated server that has Docker downloaded and the repository cloned from GitHub.
 
 
 # Architecture<a id="architecture"></a>
@@ -278,23 +374,42 @@ ShipSight is composed of four main components: a simulated satellite data source
 
 #### backend
 
-- contains all files relating to the backend
+- Backend - Backend related files
+  - flaskr - contains the api, database, main, and views files
+  - Dockerfile - file necessary to set up Docker
+  - requirements.txt - dependencies and other requirements needed to run the backend
+  - startguide.md - a file on how to start the backend
+  - .env
 
 #### frontend
 
-- contains all files relating to the frontend and authentication of supabase 
-
-#### AIWaterfall
-
-- contains all files relating to training the AI Model
+- fontend - Frontend related files
+  - public - contains all images used for the frontend
+  - src - react files
+    - components - components used in the react pages
+      - ui - components from shad.cn library
+    - pages - pages used by the App.jsx
+    - App.jsx - the react app page
+    - App.css - the css used to import tailwind and other css
+    - main.jsc - main react file
+    - supabaseClient.js - supabase client configuration file for authentication
+  - Dockerfile - file necessary to set up Docker
+  - vite.config.js - configuration file for vite
+  - .env
 
 #### main
 
-- This functions as our "Satellite" which means it runs the AI Model that detects the ships and sends out a JSON of data to the backend.
+- main - functions as our "Satellite" which means it runs the AI Model that detects the ships and sends out a JSON of data to the backend.
+  - pysat - resources used to train the AI Model
+    - main.py - the python file that contains the AI Model
+  
+#### AIWaterfall
+
+- AIWaterfall - File containing notebooks to guide in creating a ML Model for image detection
 
 #### old-frontend
 
-- this contains our old frontend code and is only kept in the project as a reference to past work done on the assignment
+- old-frontend - the old frontend that we left in the project to demonstrate the work we had done throughout the semester that was no longer being used
 
 #### Global Files
 
@@ -307,12 +422,10 @@ ShipSight is composed of four main components: a simulated satellite data source
         AISSTREAM_API_KEY=key
         SUPABASE_PASSWWORD=pass
         ```
-- README.md
-    The documentation of the Project
-- Software Requirements
-    - The initial requirements of the project
-- docker-compose.yaml
-  - a classic docker file to get docker running
+- DEMO.md - A file that describes how the software should be demonstrated
+- README.md - The documentation of the Project
+- Software Requirements - The initial requirements of the project
+- docker-compose.yaml - a classic docker file to get docker running
 
 
 
@@ -320,6 +433,8 @@ ShipSight is composed of four main components: a simulated satellite data source
 
 - Pull requests should follow this pathing:
     - Main <-- Dev <-- Feature <-- Branches
+
+
 
 ### 10. Resources
 - This 'README.md'
